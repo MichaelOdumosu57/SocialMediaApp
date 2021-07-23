@@ -1,0 +1,281 @@
+{
+    "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
+    "version": 1,
+    "newProjectRoot": "projects",
+    "projects": {
+        "JudimaApp": {
+            "projectType": "application",
+            "schematics": {
+                "@schematics/angular:component": {
+                    "style": "scss",
+                    "skipTests": true
+                },
+                "@schematics/angular:directive": {
+                    "skipTests": true
+                },
+                "@schematics/angular:service": {
+                    "skipTests": true
+                }
+            },
+            "root": "",
+            "sourceRoot": "src",
+            "prefix": "app",
+            "architect": {
+                "judima": {
+                    "builder": "@angular-devkit/build-angular:browser",
+                    "options": {
+
+                        "outputPath": "",
+                        "fileReplacements": [
+                            {
+                                "replace": "src/app/website.ts",
+                                "with": "src/app/cms/website-judima-dev.ts"
+                            },
+                            {
+                                "replace": "src/environments/environment.ts",
+                                "with": "src/environments/environment.judima.dev.ts"
+                            }
+                        ],
+                        "index": "src/index.html",
+                        "main": "src/main.ts",
+                        "polyfills": "src/polyfills.ts",
+                        "tsConfig": "tsconfig.app.json",
+                        "aot": true,
+                    "assets": [
+                            "src/assets"
+                        ],
+                        "styles": [
+                            "src/styles.scss"
+                        ],
+
+                        "scripts": [
+                            // "src/assets/scripts/modernizr/modernizr.js",
+                            "src/assets/scripts/polyfills/object.js",
+                            // "src/assets/scripts/parseXml.js",
+                            // "src/assets/scripts/signaturePad.js",
+                            // "src/assets/scripts/pikaday.js",
+                            "src/assets/scripts/tween.js/dist/tween.umd.js",
+                            "src/assets/scripts/three/OrbitControls.js",
+                            "src/assets/scripts/vanillaTilt.js"
+                        ],
+                        "optimization": false,
+                        "sourceMap": true,
+                        "poll": 2500,
+                        "verbose": false,
+                        "watch": false
+                    },
+                    "configurations": {
+                        "codesandboxprod": {
+                            "outputPath":"./dist/codesandbox",
+
+                            "fileReplacements": [
+                                {
+                                    "replace": "src/app/website.ts",
+                                    "with": "src/app/cms/website-social-dev.ts"
+                                },
+                                {
+                                    "replace": "src/environments/environment.ts",
+                                    "with": "src/environments/environment.social.prod.ts"
+                                }
+                            ],
+                            "assets": [
+                                "src/assets"
+                            ],
+                            "optimization": true,
+                            "outputHashing": "all",
+                            "sourceMap": false,
+                            "namedChunks": false,
+                            "extractLicenses": true,
+                            "vendorChunk": false,
+                            "buildOptimizer": true,
+
+                            "budgets": [
+                                {
+                                    "type": "initial",
+                                    "maximumWarning": "2mb",
+                                    "maximumError": "5mb"
+                                },
+                                {
+                                    "type": "anyComponentStyle",
+                                    "maximumWarning": "6kb",
+                                    "maximumError": "10kb"
+                                }
+                            ]
+                        },
+                        "github": {
+                            "outputPath":"../docs",
+                            "baseHref": "/JudimaApp/",
+                            "deployUrl":"/JudimaApp/",
+                            "fileReplacements": [
+                                {
+                                    "replace": "src/app/website.ts",
+                                    "with": "src/app/cms/website-judima-dev.ts"
+                                },
+                                {
+                                    "replace": "src/environments/environment.ts",
+                                    "with": "src/environments/environment.judima.prod.ts"
+                                }
+                            ],
+                            "assets": [
+                                "src/assets"
+                            ],
+                            "optimization": true,
+                            "outputHashing": "all",
+                            "sourceMap": true,
+                            "namedChunks": false,
+                            "extractLicenses": true,
+                            "vendorChunk": false,
+                            "buildOptimizer": true,
+
+                            "budgets": [
+                                {
+                                    "type": "initial",
+                                    "maximumWarning": "2mb",
+                                    "maximumError": "5mb"
+                                },
+                                {
+                                    "type": "anyComponentStyle",
+                                    "maximumWarning": "6kb",
+                                    "maximumError": "10kb"
+                                }
+                            ]
+                        },
+                        "pseudoprod": {
+                            "outputPath":"./dist/psuedo",
+                            "fileReplacements": [
+                                {
+                                    "replace": "src/app/website.ts",
+                                    "with": "src/app/cms/website-social-dev.ts"
+                                },
+                                {
+                                    "replace": "src/environments/environment.ts",
+                                    "with": "src/environments/environment.social.prod.ts"
+                                }
+                            ],
+                            "assets": [
+                                "src/assets"
+                            ],
+                            "optimization": true,
+                            "outputHashing": "all",
+                            "sourceMap": true,
+                            "namedChunks": false,
+                            "extractLicenses": true,
+                            "vendorChunk": false,
+                            "buildOptimizer": true,
+
+                            "budgets": [
+                                {
+                                    "type": "initial",
+                                    "maximumWarning": "2mb",
+                                    "maximumError": "5mb"
+                                },
+                                {
+                                    "type": "anyComponentStyle",
+                                    "maximumWarning": "6kb",
+                                    "maximumError": "10kb"
+                                }
+                            ]
+                        },
+                        "social": {
+
+                            "fileReplacements": [
+                                {
+                                    "replace": "src/app/website.ts",
+                                    "with": "src/app/cms/website-social-dev.ts"
+                                },
+                                {
+                                    "replace": "src/environments/environment.ts",
+                                    "with": "src/environments/environment.social.dev.ts"
+                                },
+                                {
+                                    "replace": "src/app/app.module.ts",
+                                    "with": "src/app/app.module.dev.ts"
+                                },
+                                {
+                                    "replace": "src/app/customExports.ts",
+                                    "with": "src/app/customExports.dev.ts"
+                                }
+
+
+                            ]
+                        },
+                        "play": {
+                            "fileReplacements": [
+                                {
+                                    "replace": "src/app/website.ts",
+                                    "with": "src/app/cms/website-play-dev.ts"
+                                },
+                                {
+                                    "replace": "src/environments/environment.ts",
+                                    "with": "src/environments/environment.judima.dev.ts"
+                                },
+                                {
+                                    "replace": "src/app/app.module.ts",
+                                    "with": "src/app/app.module.dev.ts"
+                                },
+                                {
+                                    "replace": "src/app/customExports.ts",
+                                    "with": "src/app/customExports.dev.ts"
+                                }
+                            ]
+                        }
+
+
+
+                    }
+                },
+                "serve": {
+                    "builder": "@angular-devkit/build-angular:dev-server",
+                    "options": {
+                        "browserTarget": "JudimaApp:judima:play",
+                        "port": 4520,
+                        "liveReload": true,
+						"hmr": false
+                    },
+                    "configurations": {
+                        "github": {
+                            "browserTarget": "JudimaApp:judima:github"
+                        },
+                        "codeSandBoxProd": {
+                            "browserTarget": "JudimaApp:judima:codesandboxprod"
+                        },
+                        "pseudoProduction": {
+                            "browserTarget": "JudimaApp:judima:pseudoprod"
+                        },
+                        "play": {
+                            "browserTarget": "JudimaApp:judima:play"
+                        },
+                        "social": {
+                            // "disableHostCheck": true,
+                            // "liveReload": false,
+                            "port": 4521,
+                            "browserTarget": "JudimaApp:judima:social"
+                        }
+
+                    }
+                },
+                "extract-i18n": {
+                    "builder": "@angular-devkit/build-angular:extract-i18n",
+                    "options": {
+                        "browserTarget": "JudimaApp:build"
+                    }
+                },
+                "lint": {
+                    "builder": "@angular-devkit/build-angular:tslint",
+                    "options": {
+                        "tsConfig": [
+                            "tsconfig.app.json"
+                        ],
+                        "exclude": [
+                            "**/node_modules/**"
+                        ]
+                    }
+                }
+            }
+        }
+    },
+    "defaultProject": "JudimaApp",
+    "cli": {
+        "analytics": false
+    }
+}

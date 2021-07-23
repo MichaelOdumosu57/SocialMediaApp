@@ -1,0 +1,42 @@
+version: 2.1
+orbs:
+  browser-tools: circleci/browser-tools@1.1.3
+jobs:
+  frontend:
+    docker:
+      - image: windmillcode/angular-tornado-capybara:0.1.2 
+    environment:
+    steps:
+      - browser-tools/install-geckodriver
+      - browser-tools/install-chromedriver
+      - checkout
+
+      - run:  
+          . /etc/profile.d/01-custom-docker-setup.sh;    
+          echo $PATH;
+
+          cd ~/project/JudimaApp ;
+          mv /node_modules ./ ;
+          npx ng serve -c=social &         
+
+          cd  ~/project/JudimaApp/backend/python ;
+          pyenv global 3.9.5 ;
+          python tornado_server.py &     
+
+          cd ~/project/JudimaApp/testing/e2e ; 
+          rm -rf .bundle ;
+          rm -rf Gemfile ;
+          rm -rf Gemfile.lock ;
+          sleep 30s;
+          bundle exec rspec social-e2e-circleci.rb ;                 
+
+workflows:
+  version: 2.1
+  e2e:     
+    jobs: 
+      - frontend:  
+          filters:  # using regex filters requires the entire branch to match
+            branches:
+              only:  # only branches matching the below regex filters will run
+                - circleci-dev      
+      
