@@ -51,10 +51,6 @@ Capybara.javascript_driver = :selenium_chrome_billy
 $client = nil
 
 # dev additions
-$host = %{127.0.0.1}
-unless ENV[%{MY_E2E_HOST}] == nil
-  $host = ENV[%{MY_E2E_HOST}]
-end
 $accounts = Hash[
   :firefox_billy => Hash[
     :inbox_string => %{ebf80eca-79f0-47c6-a7c0-be202b0f0588},
@@ -163,7 +159,7 @@ RSpec.configure do |config|
 	my_drivers = %i{chrome_billy firefox_billy}
   # my_drivers = %i{chrome_billy}
 	hosts = Hash.new
-	hosts[:dev] =  %{http://#{$host}:4521}
+	hosts[:dev] =  ENV[%{FRONTEND_URL}]
 
 	config.full_backtrace = false
 	config.backtrace_exclusion_patterns = [
@@ -177,15 +173,19 @@ RSpec.configure do |config|
   config.before :example do
 
     visit %{/}
-    page.execute_script %Q{
-      window.judima_environment.dev.createAccount.dummy = false
-      window.judima_environment.dev.confCode.dummy = false
-      window.judima_environment.dev.totpCreateAccount.dummy = false
-      window.judima_environment.dev.totpSignIn.dummy = false
-      window.judima_environment.dev.passSignIn.dummy = false
-      window.judima_environment.dev.passChange.dummy = false
-      window.judima_environment.dev.deleteSignIn.dummy = false
-    }
+    begin
+      page.execute_script %Q{
+        window.judima_environment.dev.createAccount.dummy = false
+        window.judima_environment.dev.confCode.dummy = false
+        window.judima_environment.dev.totpCreateAccount.dummy = false
+        window.judima_environment.dev.totpSignIn.dummy = false
+        window.judima_environment.dev.passSignIn.dummy = false
+        window.judima_environment.dev.passChange.dummy = false
+        window.judima_environment.dev.deleteSignIn.dummy = false
+      }
+    rescue => e
+      nil
+    end
     begin
       page.current_window.maximize
     rescue
@@ -218,9 +218,12 @@ RSpec.configure do |config|
         :access_token =>$access_token
       ]
       # PP.pp payload
-      headers = Hash[:Origin => %{http://127.0.0.1:4521},:Content_Type => %{application/json}]
+      headers = Hash[
+        :Origin => ENV[%{FRONTEND_URL}],
+        :Content_Type => %{application/json}
+      ]
       begin
-        RestClient.post("http://#{$host}:3005", payload=payload.to_json, headers=headers)
+        RestClient.post(ENV[%{BACKEND_URL}], payload=payload.to_json, headers=headers)
       rescue => exception
         nil
       end
@@ -269,9 +272,12 @@ RSpec.configure do |config|
       #
 
       payload = Hash[:env =>%{adminDeleteAcct},:user => inbox.email_address]
-      headers = Hash[:Origin => %{http://127.0.0.1:4521},:Content_Type => %{application/json}]
+      headers = Hash[
+        :Origin => ENV[%{FRONTEND_URL}]  ,
+        :Content_Type => %{application/json}
+      ]
       begin
-        RestClient.post("http://#{$host}:3005", payload=payload.to_json, headers=headers)
+        RestClient.post(ENV[%{BACKEND_URL}], payload=payload.to_json, headers=headers)
       rescue => exception
         nil
       end
@@ -298,7 +304,7 @@ Billy.configure do |c|
   c.record_requests = true
   # c.whitelist << %{#{$host}:4521}# to append a host without overriding the defaults.
   # c.whitelist << %{127.0.0.1:4521}
-  c.whitelist << %{#{$host}:3005}
+  c.whitelist << ENV[%{BACKEND_URL}]
   c.whitelist << %{127.0.0.1:3005}
   c.logger = nil
   c.persist_cache = true
@@ -320,7 +326,7 @@ def stagingTest
         my_response << r
         PP.pp response
       end
-      proxy.stub('http://#{$host}:4521/').and_return(my_proc)
+      proxy.stub(ENV[%{FRONTEND_URL}],).and_return(my_proc)
       sleep 10
       expect(my_response.size).not_to eq 0
       # PP.pp Billy.proxy.requests
@@ -366,7 +372,7 @@ def stagingTest
         end
         response
       end
-      proxy.stub(%{http://#{$host}:3005/}, method: %{post}).and_return my_proc
+      proxy.stub(ENV[%{BACKEND_URL}], method: %{post}).and_return my_proc
       #
 
       navs = all %{.a_p_p_MenuItem}
@@ -418,6 +424,8 @@ def stagingTest
       else
         begin
           my_QR_code = evaluate_script %{return window.judima_environment.QRcode}
+        rescue Selenium::WebDriver::Error::JavascriptError => e
+          nil
         rescue => e
           my_QR_code = execute_script %{return window.judima_environment.QRcode}
         end
@@ -443,6 +451,8 @@ def stagingTest
       else
         begin
           accounts[:access_token] = evaluate_script %{return window.judima_environment.QRcode}
+        rescue Selenium::WebDriver::Error::JavascriptError => e
+          nil
         rescue => e
           accounts[:access_token] = execute_script %{return window.judima_environment.QRcode}
         end

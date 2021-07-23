@@ -95,7 +95,7 @@ export const environment:any = {
         //
     },
 	backend:{
-		url:"https://socialpost-2414.herokuapp.com/",
+		url:"https://socialpost-2414.herokuapp.com",
 	},
     three:{
         camera:{

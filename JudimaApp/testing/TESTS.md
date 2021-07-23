@@ -1,7 +1,7 @@
 # DevOps TESTS
 * MAKE SURE YOU UPDATE THE PRODUCTION FILES WITH THE DEV FILES
     * directiveDev -> directive 
-
+* judima_enviroment cant go on the window in prod mode, figure out a diffrent way to get creds or get puffing_billy to work
 # CircleCI
 __ISSUE__ - the orb scripts fail while building the docker image
 
@@ -44,7 +44,8 @@ __ISSUE__ - the orb scripts fail while building the docker image
 * when the end user hits creates users
     * hide mainLogin, make z-index 4
     * show create1, make z-index 5
-    * make sure type password
+    * make sure ty
+    pe password
     * if email exists
         * prompt user to try again with a different email
     
