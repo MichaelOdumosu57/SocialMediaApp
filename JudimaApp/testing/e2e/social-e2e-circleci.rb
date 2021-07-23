@@ -44,7 +44,7 @@ Capybara.raise_server_errors = false
 Capybara.run_server = false
 Capybara.default_max_wait_time = 20
 Capybara.ignore_hidden_elements = false
-Capybara.javascript_driver = :selenium_chrome_billy
+# Capybara.javascript_driver = :selenium_chrome_billy
 # Selenium::WebDriver::Firefox::Binary.path = %{C://Users//Restop-2345//unneeded//Mozilla Firefox//firefox.exe}
 # Selenium::WebDriver::Firefox::Service.driver_path=%{/mnt/c/Users/Restop-2345/unneeded/ruby/geckodriver.exe}
 # Selenium::WebDriver::Chrome::Service.driver_path=%{/mnt/c/Users/Restop-2345/unneeded/ruby/chromedriver.exe}
@@ -104,6 +104,10 @@ $timeouts = Hash[
 Capybara.register_driver :chrome_billy do |app|
 
   options = Selenium::WebDriver::Chrome::Options.new
+  # options.add_argument %{--auto-open-devtools-for-tabs} # figre out to open on seperate screen
+  options.add_argument %{disable-infobars}
+  options.add_argument %{--disable-notifications}
+  options.add_argument %{--start-maximized}
   options.add_argument %{--no-sandbox}
   options.add_argument %{--disable-gpu}
   options.add_argument %{--disable-dev-shm-usage}
@@ -156,7 +160,7 @@ RSpec.configure do |config|
 
 
 
-	my_drivers = %i{chrome_billy firefox_billy}
+	my_drivers = %i{chrome_billy}
   # my_drivers = %i{chrome_billy}
 	hosts = Hash.new
 	hosts[:dev] =  ENV[%{FRONTEND_URL}]
@@ -173,6 +177,7 @@ RSpec.configure do |config|
   config.before :example do
 
     visit %{/}
+    proxy.stub(ENV[%{BACKEND_URL}]).and_return :redirect_to => ENV[%{BACKEND_DEV_URL}]
     begin
       page.execute_script %Q{
         window.judima_environment.dev.createAccount.dummy = false
@@ -245,6 +250,11 @@ RSpec.configure do |config|
 
       hosts.each do |k,v|
         Capybara.current_driver = browser
+        Capybara.javascript_driver = Hash[
+          :chrome_billy => :selenium_chrome_billy,
+          :firefox_billy =>:selenium_billy
+        ][browser.to_sym]
+
         Capybara.app_host = v
         # A Identifying and running each scenario
           # PP.pp example.metadata
@@ -262,8 +272,12 @@ RSpec.configure do |config|
 
   config.before :suite do
     # dev additions
-    # delete the user from the user pool if they are still there
 
+    # stub all requests to the backend and make sure the browser sends to  the testing backend
+
+    #
+
+    # delete the user from the user pool if they are still there
     my_drivers.each do |browser|
 
       # apply the actual inbox to the browser
@@ -326,7 +340,7 @@ def stagingTest
         my_response << r
         PP.pp response
       end
-      proxy.stub(ENV[%{FRONTEND_URL}],).and_return(my_proc)
+      proxy.stub(ENV[%{FRONTEND_URL}]).and_return(my_proc)
       sleep 10
       expect(my_response.size).not_to eq 0
       # PP.pp Billy.proxy.requests
@@ -334,7 +348,7 @@ def stagingTest
 
   end
 
-  RSpec.feature  %{navigation} , :skip => true  do
+  RSpec.feature  %{navigation}   do
     scenario %{as you click on navigation the elements highlight the navs should highlight} do
       navs = all %{.a_p_p_MenuItem}
       navs.each do |x|
@@ -347,10 +361,10 @@ def stagingTest
     end
   end
 
-	RSpec.feature %{account login} do
+	RSpec.feature %{account login}  do
 
 
-    scenario %{create acct}   do
+    scenario %{create acct}  do
 
       # init
       accounts = $accounts[Capybara.current_driver.to_sym]
@@ -361,6 +375,7 @@ def stagingTest
       # stub the backend
       post_backend_response = Hash.new
       my_proc = Proc.new do |*args|
+        pp response
         response = Billy.pass_request(*args)
 
         response_body = JSON.parse response[:body]
@@ -372,7 +387,10 @@ def stagingTest
         end
         response
       end
-      proxy.stub(ENV[%{BACKEND_URL}], method: %{post}).and_return my_proc
+      proxy.stub(
+        ENV[%{BACKEND_DEV_URL}],
+        :method => %{post}
+      ).and_return my_proc
       #
 
       navs = all %{.a_p_p_MenuItem}

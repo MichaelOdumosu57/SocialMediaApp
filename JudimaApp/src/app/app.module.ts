@@ -88,12 +88,12 @@ if (env.testingAcct.confirm === "true") {
         //
 
         // primeNG
-        TableModule,
-        ButtonModule,
-        CarouselModule,
-        CardModule,
-        DropdownModule,
-        ProgressSpinnerModule,
+        // TableModule,
+        // ButtonModule,
+        // CarouselModule,
+        // CardModule,
+        // DropdownModule,
+        // ProgressSpinnerModule,
         //
 
         // dev additions

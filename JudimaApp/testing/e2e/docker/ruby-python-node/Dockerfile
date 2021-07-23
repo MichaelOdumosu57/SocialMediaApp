@@ -66,7 +66,6 @@ COPY Gemfile /home/ubuntu/
 COPY linux-requirements.txt /requirements.txt
 COPY package.json /
 COPY 01-custom-docker-setup.sh /etc/profile.d/01-custom-docker-setup.sh
-COPY pass.txt ./pass.txt
 RUN chmod +x /etc/profile.d/01-custom-docker-setup.sh
 RUN chmod +x /etc/profile.d/01-set-pyenv.sh
 
@@ -117,7 +116,6 @@ RUN chmod 777 install_firefox.sh;   ./install_firefox.sh;\
 
 # delete some files
 RUN rm install_firefox.sh install_chrome.sh install_chromedriver.sh install_geckodriver.sh
-
 
 
 
