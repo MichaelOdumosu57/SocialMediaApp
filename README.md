@@ -12,47 +12,52 @@ Only members of the project can read the README.md from the ignore folder
 # Stack 
 
 ## Frontend
-* Three.js
-* Tween.js
-* Angular 
+* Three.js  v0.130.1
+* Tween.js  v18.6.4
+* Angular  v11.2.13
 
 ## Backend
-* Tornado
-* boto3 (aws cognito idp)
+* Tornado v6.1
+* boto3 (aws cognito idp) v1.17.107
 
 
 ## Testing
-* Docker, (tes in docker containers from linux VM)
+* Docker, (tes in docker containers from linux VM) v20.10.7
 
 ### Unit
-* rspec
-* capybara
+* rspec    v3.10.0
+* capybara v3.35.3
 
 ### Integration
-* RestClient
-* rspec
-* capybara
+* rspec    v3.10.0
+* capybara v3.35.3
 
 ### E2E
-* rspec
-* capybara
-* mailslurp
-* puffing billy
+* rspec    v3.10.0
+* capybara v3.35.3
+
+* mailslurp v12.7.1
+* puffing billy v2.4.1
 
 ## Hosting
-* codesandbox , frontend
-* heroku, backend
+* codesandbox , frontend v.2.2.3
+* heroku, backend v7.56.0
 
 
 ## CI/CD
 * CircleCI
-* Docker
-
-
-
+* Docker v20.10.7
+* Virtual Box v 6.1.22
+* Ubuntu VM 20.04.1
 
 
 # Structure
+
+## Linting Rules
+* for each commit, we append "WORKING COMMIT" so we know the commit is free of bugs
+* ruby indentation 2 lines
+* ts indentation 4 lines
+
 
 ## Project Directory Mapping
 
@@ -120,6 +125,9 @@ refer to README.md in ignore
 # Issues 
 * everything needs lazyloading, 
 * make sure that we make good use of the refresh token to check if the user is logged in, and give them their resources
+
+# TODO
+* support for a firebase build option
 
 # Resources
 

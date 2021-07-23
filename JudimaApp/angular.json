@@ -234,6 +234,7 @@
                     },
                     "configurations": {
                         "github": {
+
                             "browserTarget": "JudimaApp:judima:github"
                         },
                         "codeSandBoxProd": {
@@ -244,6 +245,9 @@
                         },
                         "play": {
                             "browserTarget": "JudimaApp:judima:play"
+                        },
+                        "firebase": {
+                            "browserTarget": "JudimaApp:judima:firebase"
                         },
                         "social": {
                             // "disableHostCheck": true,
