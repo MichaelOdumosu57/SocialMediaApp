@@ -2,18 +2,18 @@ import { Directive, ElementRef, Input, Renderer2, TemplateRef, ViewContainerRef,
 import { RyberService } from '../ryber.service'
 import { fromEvent, from, Subscription, Subscriber, of, combineLatest } from 'rxjs';
 import { deltaNode, eventDispatcher, numberParse, objectCopy, navigationType,judimaDirective } from '../customExports'
-import { catchError, delay, first, take } from 'rxjs/operators'
+import { catchError, delay, first, take,tap } from 'rxjs/operators'
 import { environment as env } from '../../environments/environment'
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import {Scene,PerspectiveCamera,WebGLRenderer,BoxGeometry,SphereGeometry,MeshBasicMaterial,MeshStandardMaterial,Mesh,AmbientLight,GridHelper,EventDispatcher,Vector3,MOUSE,TOUCH,Quaternion,Spherical,Vector2,TextureLoader}  from 'three';
+import {Scene,PerspectiveCamera,WebGLRenderer,SphereGeometry,MeshBasicMaterial,MeshStandardMaterial,Mesh,AmbientLight,GridHelper,EventDispatcher,Vector3,MOUSE,TOUCH,Quaternion,Spherical,Vector2,TextureLoader}  from 'three';
 
 
 let THREE = {
     Scene,
+
     PerspectiveCamera,
     WebGLRenderer,
     SphereGeometry,
-    BoxGeometry,
     MeshStandardMaterial,
     Mesh,
     AmbientLight,
@@ -202,40 +202,54 @@ export class ThreeDirective {
                             let anchorEvent = fromEvent(link.element, 'click')
                             .subscribe({
                                 next:(result:any)=>{
-                                    try {
-                                        // change the path
-                                        ryber.appCO0.metadata.navigation.full.navigated = "true"
-                                        ryber.appCurrentNav = link.extras.appThree.options.navName
-                                        //
-                                    } catch (error) {
-                                        // console.log(error)
-                                    }
-
-                                    // set the highlights
-                                    let linkArray = Array.from(valx.types['link'])
-                                    linkArray
-                                    .forEach((z:any,k)=>{
-                                        let link = zChildren[z]
-                                        if(ryber.appCurrentNav === link.extras.appThree.options.navName){
-                                            link.css["font-family"] = "Arial"
-                                        }
-                                        else {
-                                            delete link.css["font-family"]
-                                        }
-                                    })
-                                    ref.detectChanges()
-                                    //
 
                                     // try to update the tween result
                                     TWEEN.removeAll()
                                     let tween = new TWEEN.Tween(camera.position)
                                     .to(
-                                        cameraValues[ryber.appCurrentNav],
+                                        cameraValues[link.extras.appThree.options.navName],
                                         1500
                                     )
+                                    .onComplete(()=>{
+
+                                        of(null)
+                                        .pipe(
+                                            take(1),
+                                            tap(()=>{
+
+                                                // change the path
+                                                ryber.appCO0.metadata.navigation.full.navigated = "true"
+                                                ryber.appCurrentNav = link.extras.appThree.options.navName
+                                                //
+
+
+                                                // set the highlights
+                                                let linkArray = Array.from(valx.types['link'])
+                                                linkArray
+                                                .forEach((z:any,k)=>{
+                                                    let link = zChildren[z]
+                                                    if(ryber.appCurrentNav === link.extras.appThree.options.navName){
+                                                        link.css["font-family"] = "Arial"
+                                                    }
+                                                    else {
+                                                        delete link.css["font-family"]
+                                                    }
+                                                })
+                                                ref.detectChanges()
+                                                //
+                                            }),
+                                            catchError((err)=>{
+                                                console.log(err)
+                                                return of(err)
+                                            })
+                                        )
+                                        .subscribe()
+                                    })
                                     // .easing(TWEEN.Easing.Quadratic.Out)
                                     .start()
                                     //
+
+
 
                                 },
                                 error:(err:any)=>{
@@ -248,6 +262,15 @@ export class ThreeDirective {
                         })
 
 
+
+
+
+                        // submit
+                        // .forEach((y:any,j)=>{
+                        //     // take some action
+                        //     valx.subscriptions.push(of[])
+                        //     //
+                        // })
                         subscriptions.push(...valx.subscriptions)
                         //
 

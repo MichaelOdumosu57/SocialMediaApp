@@ -48,7 +48,7 @@ def createHandler(client):
     class MainHandler(tornado.web.RequestHandler):
 
         def set_default_headers(self):
-            self.set_header("Access-Control-Allow-Origin", "https://7ckhz.csb.app")
+            self.set_header("Access-Control-Allow-Origin", os.environ.get("FRONTEND_ORIGIN"))
             self.set_header("Access-Control-Allow-Headers", "*")
             self.set_header("Access-Control-Allow-Credentials","true")
             self.set_header("Allow-Origin-With-Credentials","true")

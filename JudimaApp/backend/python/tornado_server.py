@@ -49,7 +49,7 @@ def createHandler(client):
 
         def set_default_headers(self):
             # self.set_header("Access-Control-Allow-Origin", "*")
-            self.set_header("Access-Control-Allow-Origin", "http://127.0.0.1:4521")
+            self.set_header("Access-Control-Allow-Origin", os.environ.get("FRONTEND_ORIGIN"))
             self.set_header("Access-Control-Allow-Headers", "*")
             self.set_header("Access-Control-Allow-Credentials","true")
             self.set_header("Allow-Origin-With-Credentials","true")
