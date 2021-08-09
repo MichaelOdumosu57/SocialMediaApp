@@ -359,18 +359,53 @@ export class AppComponent implements OnInit, OnDestroy {
 
         // dev additions
 
+        // check to see if the user is logged in
+        http.post(
+            env.backend.url,
+            JSON.stringify({
+                env:"refreshPage"
+            }),
+            {
+                withCredentials:true,
+                headers:{
+                    "Content-Type":"text/plain"
+                }
+            }
+        )
+        .pipe(
+            take(1)
+        )
+        .subscribe({
+            next:(result:any)=>{
+                ryber.appCO0.metadata.awsLogin.accessToken  = result.access_token
+            },
+            error:ryber.aws.refreshPage.error
+        })
         //
 
         // test code
             // you want this removed
-            // delete account
+            let wait$ = of([]).pipe(delay(500))
+            concat(
+                wait$.pipe(tap(()=>{
+                    eventDispatcher({
+                        element:document.querySelectorAll(".a_p_p_MenuItem")[2],
+                        event:'click'
+                    })
+                })),
+                wait$.pipe(
+                    delay(3000),
+                    tap(()=>{
+                    let fbManage = document.querySelectorAll(".a_p_p_SocialAcctLoginButtonPod")[0]
+                    eventDispatcher({
+                        element:fbManage,
+                        event:'click'
+                    })
+                })),
+            )
+            .subscribe()
 
-            //
-            // from(import('./components/components.component'))
-            // .pipe(tap(console.log),repeat(2))
-            // .subscribe()
-            //
-
+        //
 
         //
 	}

@@ -358,4 +358,14 @@ currentPageReportTemplate="Showing {first} to {last} of {options.value.length} e
 </ng-template>
 
 
+<button
+[class]="options.button.class"
+*ngIf="options.type === 'socialAcctLoginButton'"
+>
+<img
+[class] ="'a_p_p_SocialAcctLoginIcon ' + options.icon?.class"
+[src]="options.icon.src" alt="">
+{{options.button.text}}</button>
+
+
 <!--  -->

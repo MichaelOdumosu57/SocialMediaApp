@@ -55,6 +55,7 @@ __ISSUE__ - the orb scripts fail while building the docker image
     * if the account already exist and other errors prompt accordingly
 * the user should check their email for the confirmation code
     * once sucessful 
+        * make sure the refresh_token cookie is set
         * show create 2 
         * hide create 4
     * if failed re-prompt for confirmation code
@@ -63,6 +64,7 @@ then enter the TOTP to confirm MFA
     * once thats finished let the user know they have sucesfully created their account
     * remember for future sign in they need TOTP MFA
     * tell them proceed to the social media login page
+    * make sure the refresh_user cookie is saved
 * once they proceed away from the account login page 
     * reset account login page
 
@@ -121,8 +123,18 @@ __ISSUE__ - if you set user prefreence for MFA it doesn't provide for refresh an
 * user clicks delete
     * hide delete2
     * show delete3
+    * clear the refresh_user and refresh_token
 * user hits back
     * hide delete2 
     * show mainLogin
     * make sure they still have their account !
     
+## Social Acct
+* test that I can navigate there from the menu and there are 10 buttons
+* make sure the user is signed in before continuing
+
+### Facebook
+* test that if I try to login to the FB accout with a social account I am sent to the acct login page
+    * optional, check if state is restored
+
+

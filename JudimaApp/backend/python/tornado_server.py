@@ -78,6 +78,16 @@ def createHandler(client):
                 if(refresh_user):
                      self.set_cookie("refresh_user",refresh_user,httponly=True)
 
+                # instructions to clear to the refresh token or user
+                refresh_clear = result.get("refresh_clear") | {}
+                if(refresh_clear.get("refresh_token") == "clear"):
+                    print('fire')
+                    self.clear_cookie("refresh_token")
+                if(refresh_clear.get("refresh_user") == "clear"):
+                    print('fire')
+                    self.clear_cookie("refresh_user")
+                #
+
                 if(result.get("message") == 'Login Failed'):
                     result["message"] = json.dumps(
                         {"message":"There has been an issue please try again"}

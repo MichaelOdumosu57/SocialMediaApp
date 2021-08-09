@@ -1,7 +1,7 @@
 import { Injectable, VERSION,Renderer2,RendererFactory2, ChangeDetectorRef,Inject } from "@angular/core";
 import { fromEvent,Observable, of, Subject, Subscription, BehaviorSubject, ReplaySubject, merge, combineLatest } from "rxjs";
 // import { Router,RouterEvent } from "@angular/router";
-import { zChildren, componentObject, numberParse, ryberUpdate,ryberUpdateFactory, objectCopy,authAE } from "./customExports";
+import { zChildren, componentObject, numberParse, ryberUpdate,ryberUpdateFactory, objectCopy,authAE,eventDispatcher } from "./customExports";
 import { HttpClient } from "@angular/common/http";
 // @ts-ignore
 import website from './website';
@@ -1630,7 +1630,7 @@ export class RyberService {
                 cameraValuesSub:new ReplaySubject(1)
             },
             awsLogin:{
-                access_token:null,
+                accessToken:null,
                 accessTokenSub:new Subject(),
 
             },
@@ -1643,7 +1643,30 @@ export class RyberService {
     //
 
     //dev additions
+    socialLogin = {
+        general:{
+            catchError:()=>{
+                alert("There was an error please contact support")
+                return of({message:"Error"})
+            }
+        },
+        addFBAcct:{
+            catchError:(err)=>{
+                if(err.error === "Unauthenticated"){
+                    // change the path
+                    let acctLogin = document.querySelectorAll(".a_p_p_MenuItem")[1]
+                    eventDispatcher({
+                        element:acctLogin,
+                        event:'click'
+                    })
+                    //
+                    alert("Please Sign Into your Social Media Acct")
 
+                }
+                return of({message:"Error"})
+            }
+        }
+    }
     aws= {
         confirmAccount:{
             catchError:(err)=>{
@@ -1706,6 +1729,11 @@ export class RyberService {
         deleteAcct:{
             catchError: (err)=>{
                 return of({})
+            }
+        },
+        refreshPage:{
+            error: (err)=>{
+                console.log(err)
             }
         }
     }

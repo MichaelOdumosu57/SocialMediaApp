@@ -1504,6 +1504,10 @@ let socialAcctDev :Array<Partial<zProtoComponent>> = [
                         appSocialLogin:{
                             confirm:"true",
                             type:["body"]
+                        },
+                        appComponents:{
+                            type:["body"],
+                            confirm:"true",
                         }
                     },
                     judima:{
@@ -1531,6 +1535,9 @@ let socialAcctDev :Array<Partial<zProtoComponent>> = [
                     zChildren:Array(10).fill(null)
                     .map((x:any,i)=>{
 
+                        let prefixes = [
+                            "FB","TW","IG","PI","TM","DS","RDIT","BLOG","TW","PT"
+                        ]
                         let classes = [
                             "facebook  a_p_p_SocialAcctFBLoginButton",
                             "twitter   a_p_p_SocialAcctTWLoginButton",
@@ -1545,28 +1552,57 @@ let socialAcctDev :Array<Partial<zProtoComponent>> = [
                         ]
                         let text=  ["Facebook","Twitter","Instagram","Pinterest","Tumblr","Discord","Reddit","Blogger","Twitch","Patreon"]
                         .map((x,i)=>{
-                            return "Continue With "+x
+                            return "Manage " +x + " Account"
                         })
-
+                        let icons = Array(10).fill(null).map((x,i)=>{
+                            return {
+                                src:mediaPrefix({media:'shared/'+i+".png"})
+                            }
+                        })
+                        let socialLogin = Array(10).fill(null).map((x,i)=>{
+                            return {
+                                type:prefixes
+                                .map((y,j)=>{
+                                    return y+"Manage"
+                                })[i]
+                            }
+                        })
                         return {
-                            bool:"b" ,
-                            val:classes[i],
+                            bool:"app-components" ,
+                            val:"loginPod a_p_p_SocialAcctLoginButtonPod",
                             css:{
-                                "z-index":5
+                                "z-index":5,
                             },
-                            text:text[i],
                             logic:{
                                 desktop:{
-                                    width:()=>{return 320},
+                                    width:()=>{return 300},
                                     height:()=>{return 60},
-                                    top:[100,200,300,400,500][i%5],
-                                    left:[120,520][Math.floor(i/5)],
+                                    top:[100,200,300,400,500].map((x,i)=>{return x- 40})[i%5],
+                                    left:[280,630][Math.floor(i/5)],
                                 },
                                 mobile:{
                                     width:.2,
                                     height:.2,
                                     top:0,
                                     left:0
+                                }
+                            },
+                            extras:{
+                                options:{
+                                    type:"socialAcctLoginButton",
+                                    button:{
+                                        text:text[i],
+                                        class:classes[i],
+                                    },
+                                    icon:{
+                                        src:icons[i]?.src,
+                                    },
+                                    component:{
+                                        class:"a_p_p_SocialAcctLoginButtonView"
+                                    }
+                                },
+                                appSocialLogin:{
+                                    type:["mainLogin","mainLoginBold",socialLogin[i].type]
                                 }
                             },
                             group:["socialLogin"]
@@ -1584,6 +1620,79 @@ let socialAcctDev :Array<Partial<zProtoComponent>> = [
                     extras:{
                         appSocialLogin:{
                             type:["mainLogin","mainLoginPod"]
+                        }
+                    }
+                }
+            },
+            {
+                key:"container a_p_p_SocialAcctFBLoginView",
+                type:"components",
+                split:8,
+                left:350,
+                height:600,
+                top:-600,
+                options:{
+                    extras:{
+                        options:{
+                            type:"awsLogin",
+                            lazyLoad:"true",
+                            component:{
+                                style:{
+                                    "background-color":"#fff",
+                                }
+                            },
+                            panels:[
+                                [
+                                    {
+                                        type:"title",
+                                        innerText:"Facebook",
+                                        class:"a_p_p_SocialAcctFBLoginViewStageTitle",
+                                        appSocialLogin:{
+                                            type:["FB1","FB1Bold"],
+                                        }
+                                    },
+                                    ...Array(2).fill(null)
+                                    .map((x:any,i)=>{
+                                        return {
+                                            type:"input",
+                                            class:"a_p_p_SocialAcctFBLoginViewStageInput",
+                                            placeholder:["Username","Password"][i],
+                                            appSocialLogin:{
+                                                type:["FB1","FB1Bold",["FB1User","FB1Pass"][i]]
+                                            },
+                                        }
+                                    }),
+                                    {
+                                        type:"button",
+                                        class:`a_p_p_SocialAcctFBLoginViewStageButton
+                                        a_p_p_SpecificBG1`,
+                                        innerText:`Submit`,
+                                        style:{
+                                            margin:"30px auto 0 auto",
+                                            height:"120px",
+                                            width: "230px",
+                                        },
+                                        appSocialLogin:{
+                                            type:["FB1","FB1Bold","FB1Submit"]
+                                        },
+
+                                    },
+                                ]
+                            ]
+                        },
+                        appSocialLogin:{
+                            type:["FB","FBBold","FBView1"]
+                        },
+                        appComponents:{
+                            type:["lazyLoad"],
+                            duplicateIgnore:"true",
+                            zSymbolNeeded:"true",
+                            options:{
+                                lazyLoad:{
+                                    delay:1000,
+                                    tryAgain:"true"
+                                }
+                            }
                         }
                     }
                 }

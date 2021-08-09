@@ -49,7 +49,7 @@ export const environment:any = {
         tracingOrigins:["localhost",/^\//]
     },
 	navigation:{
-		startURL:"/socialAcct",
+		startURL:"/menu",
         type:"full" //[SPA,full],
 	},
     sectionDefault:{
@@ -59,38 +59,49 @@ export const environment:any = {
 
 	// dev additions
     dev:{
+
+        socialLogin:{
+            addFBAcct:{
+                dummy:false
+            }
+        },
+
+
+
+
+
         // delete account
         deleteSignIn:{
-            dummy:true
+            dummy:false
         },
         deleteConfirm:{
-            dummy:true
+            dummy:false
         },
         //
 
         // create account
         createAccount:{
-            dummy:true
+            dummy:false
         },
         confCode:{
-            dummy:true
+            dummy:false
         },
         totpCreateAccount:{
-            dummy:true
+            dummy:false
         },
 
         // signIn
         totpSignIn:{
-            dummy:true
+            dummy:false
         },
         //
 
         // password
         passSignIn:{
-            dummy:true
+            dummy:false
         },
         passChange:{
-            dummy:true
+            dummy:false
         }
         //
     },
@@ -103,7 +114,7 @@ export const environment:any = {
             position:{
                 x:0,
                 y:0,
-                z:920
+                z:1700
             }
         }
     }

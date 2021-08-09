@@ -72,14 +72,6 @@ export class ComponentsDirective {
                                 // setup the lazyLoad observable
                                 let lazyLoadComponent = from(import('../components/components.component'))
                                 .pipe(
-                                    // tap(()=>{
-                                    //     ref.detectChanges()
-                                    // }),
-                                    // timeoutWith(2500,of("am I working")),
-                                    // catchError((err)=>{
-                                    //     console.log(err)
-                                    //     return of("err")
-                                    // }),
 
 
                                     delay(
@@ -91,6 +83,7 @@ export class ComponentsDirective {
                                     ),
                                     //
                                 )
+                                // 
 
 
                                 let lazyLoadComponentSub:Subscription = lazyLoadComponent

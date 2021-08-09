@@ -1,6 +1,8 @@
 // you place these in the final bloack after app ngAfterViewInit,
     // say you dont want to setup e2e automation while you develop
 
+
+
 // @ts-nocheck
 // create account test code
 let wait$ = of([]).pipe(delay(500))
@@ -279,3 +281,27 @@ concat(
     // tap(console.log)
 )
 .subscribe()
+//
+
+
+// // socialAcct
+
+// social accot fb login
+concat(
+    wait$.pipe(tap(()=>{
+        eventDispatcher({
+            element:document.querySelectorAll(".a_p_p_MenuItem")[2],
+            event:'click'
+        })
+    })),
+    wait$.pipe(tap(()=>{
+        let createButton = document.querySelectorAll(".a_p_p_SocialAcctFBLoginButton")[0]
+        eventDispatcher({
+            element:createButton,
+            event:'click'
+        })
+    })),
+)
+.subscribe()
+
+//

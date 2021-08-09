@@ -83,6 +83,11 @@ class my_ibm_language_client():
         print(e.__class__.__name__)
         print(traceback.print_exc())
         print("---------------------------")
+        if ParamValidationError == e:
+            return {
+                'status':401,
+                'message':"Unauthenticated"
+            }
         return {
             'status':404,
             'message': 'an error occured check the output from the backend'
@@ -107,7 +112,6 @@ class my_ibm_language_client():
         #
 
         # aws cognito
-        # self.cognito_client = cognito_client
         self.attrgetter = attrgetter # look up python destructuring
         self.itemgetter = itemgetter
         self.client = client
@@ -117,6 +121,7 @@ class my_ibm_language_client():
         self.hmac = hmac
         self.hashlib = hashlib
         self.base64 = base64
+        self.ParamValidationError = ParamValidationError
         #
 
     def gen_secret_hash(self,func):
@@ -131,11 +136,13 @@ class my_ibm_language_client():
 
                 return func(username,app_client_id,sec_key,secret_hash)
             except ParamValidationError as e:
+                print(e)
                 return {
                     'status':401,
                     'message':"Unauthenticated"
                 }
             except NotAuthorizedException as e:
+                print(e)
                 return {
                     'status':401,
                     'message':"Unauthenticated"
@@ -146,7 +153,7 @@ class my_ibm_language_client():
                     'message':"Limit Exceeded"
                 }
             except InvalidParameterException as e:
-                print(e)
+
                 return {
                     'status':500,
                     'message':"Format the target string properly"
@@ -192,10 +199,11 @@ class my_ibm_language_client():
         token = data.get("token")
         target = data.get("target")
         access_token = data.get('access_token')
+        refresh_token = data.get('refresh_token')
+        refresh_user = data.get('refresh_user')
 
         # aws cognito
         client = self.client
-        # cognito_client = self.cognito_client
         sec_key = self.sec_key
         app_client_id = self.app_client_id
         totp = data.get('totp')
@@ -204,6 +212,7 @@ class my_ibm_language_client():
         old_pass = data.get('old_pass')
         new_pass = data.get('new_pass')
         confirm_pass = data.get('confirm_pass')
+        ParamValidationError = self.ParamValidationError
         #
 
         if(env == 'createAccount'):
@@ -264,7 +273,9 @@ class my_ibm_language_client():
                     access_token = response.get('AuthenticationResult').get('AccessToken')
                     refresh_token = response.get('AuthenticationResult').get('RefreshToken')
                     #
-                    pp.pprint(response)
+
+
+
                     return {
                         'status':200,
                         "refresh_token":refresh_token,
@@ -341,9 +352,20 @@ class my_ibm_language_client():
                     UserCode=user_code
                 )
 
+                # get the actual username
+                response =client.get_user(
+                    AccessToken=access_token
+                )
+                refresh_user = list(filter(
+                    lambda x:x.get('Name') == 'sub',
+                    response.get('UserAttributes')
+                ))[0].get('Value')
+                #
+
 
                 return {
                     'status':200,
+                    "refresh_user":refresh_user,
                     'message':{
                         'message':"OK"
                     }
@@ -385,10 +407,21 @@ class my_ibm_language_client():
                         UserCode=user_code
                     )
 
+                    # get the actual username
+                    response =client.get_user(
+                        AccessToken=access_token
+                    )
+                    refresh_user = list(filter(
+                        lambda x:x.get('Name') == 'sub',
+                        response.get('UserAttributes')
+                    ))[0].get('Value')
+                    #
+
 
                     return {
                         'status':200,
                         "refresh_token":refresh_token,
+                        "refresh_user":refresh_user,
                         'message':{
                             "message":"OK",
                             "access_token":access_token,
@@ -429,6 +462,10 @@ class my_ibm_language_client():
                 )
                 return {
                     'status':200,
+                    'refresh_clear':{
+                        'refresh_token':'clear',
+                        'refresh_user':'clear',
+                    },
                     'message':{
                         'message':'OK'
                     }
@@ -437,6 +474,79 @@ class my_ibm_language_client():
             except BaseException as e:
                 return self.error_handler(e,env)
 
+        elif(env == 'refreshPage'):
+            print('-------------------')
+            print('\n{}\n'.format('refreshPage'))
+            try:
+
+
+                @self.gen_secret_hash
+                def refreshPage(a,b,c,s_h):
+                    # get access token
+                    response = client.initiate_auth(
+                        ClientId=app_client_id,
+                        AuthFlow='REFRESH_TOKEN',
+                        AuthParameters={
+                            'REFRESH_TOKEN': refresh_token,
+                            'SECRET_HASH':s_h
+                        },
+                    )
+                    access_token = response.get('AuthenticationResult').get('AccessToken')
+                    # refresh_token = response.get('AuthenticationResult').get('RefreshToken')
+                    #
+
+
+
+                    return {
+                        'status':200,
+                        'message':{
+                            'message':'OK',
+                            "access_token":access_token,
+                        }
+                    }
+                return refreshPage(refresh_user,app_client_id,sec_key)
+
+            except BaseException as e:
+                return self.error_handler(e,env)
+
+        elif(env == 'dummy'):
+            print('-------------------')
+            print('\n{}\n'.format('dummy'))
+            try:
+
+                return {
+                    'status':200,
+                    'refresh_clear':{
+                        'refresh_token':'clear',
+                        'refresh_user':'clear',
+                    },
+                    'message':{
+                        'message':'OK',
+                    }
+                }
+
+            except BaseException as e:
+                return self.error_handler(e,env)
+        # socialLogin
+        elif(env == 'addFBAcct'):
+            print('-------------------')
+            print('\n{}\n'.format('addFBAcct'))
+            try:
+                client.get_user(
+                    AccessToken=access_token
+                )
+                return {
+                    'status':200,
+                    'message':{
+                        'message':'OK'
+                    }
+                }
+
+
+
+            except BaseException as e:
+                return self.error_handler(e,env)
+        #
         elif(env == 'adminDeleteAcct'):
             print('-------------------')
             print('\n{}\n'.format('adminDeleteAcct'))
