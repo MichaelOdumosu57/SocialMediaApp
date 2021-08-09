@@ -35,6 +35,8 @@ type SamePropTypeOnly<T> = {
 
 
 
+
+
 // type zSymbol =`\$\#${number}${number}${number}${number}${number| ''}`
 export class zChildText {
     item:string
@@ -71,12 +73,23 @@ export class zProtoComponent {
     metafields:Array<zProtoChildren>
 }
 
+
+
+
+
+
+
 // were looking to get rid of any
 export type zOptionsExtras = SamePropTypeOnly<{
     confirm?:"true" | string,
     type?:Array<string | "body">
     options?:any
-}> | any
+} | any>
+
+
+
+
+
 
 export class zOptionsJudima {
     mobile?:{
@@ -276,6 +289,59 @@ export interface authAE {
     contentLength?:number,
 
 }
+
+export function changePanel(devObj:{type?:string,closing: string[], zChildren?: any, open: string[], openBold: string[],ref:ChangeDetectorRef}) {
+    let {closing,zChildren,open,openBold,ref,type} = devObj
+
+    if(type === "component"){
+        closing
+        .forEach((z: any, k) => {
+            z.style.opacity = 0;
+            z.style["z-index"] = 4;
+            if(z.stage){
+                Object.assign(z.stage.style,z.style)
+            }
+        });
+
+        open
+        .forEach((z: any, k) => {
+            z.style.opacity = .5;
+            z.style["z-index"] = 5;
+            if(z.stage){
+                Object.assign(z.stage.style,z.style)
+            }
+        });
+
+        openBold
+        .forEach((z: any, k) => {
+            z.style.opacity = 1;
+            if(z.stage){
+                Object.assign(z.stage.style,z.style)
+            }
+        });
+    }
+
+    else{
+        closing
+        .forEach((z: any, k) => {
+            zChildren[z].css.opacity = 0;
+            zChildren[z].css["z-index"] = 4;
+        });
+
+        open
+        .forEach((z: any, k) => {
+            zChildren[z].css.opacity = .5;
+            zChildren[z].css["z-index"] = 5;
+        });
+
+        openBold
+        .forEach((z: any, k) => {
+            zChildren[z].css.opacity = 1;
+        });
+    }
+    ref.detectChanges()
+}
+//
 
 
 

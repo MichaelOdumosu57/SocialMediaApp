@@ -14,7 +14,7 @@ let backgroundDev:Array<Partial<zProtoComponent>>  =[
                 key:"body",
                 type:"body",
                 navigation:{
-                    name:["menu","account","socialMedia","content","dashboard"],
+                    name:["menu","account","socialAcct","content","dashboard"],
                     confirm:"true",
                     type:["body"]
                 },
@@ -78,6 +78,7 @@ let backgroundDev:Array<Partial<zProtoComponent>>  =[
     }
 ]
 let menuDev :Array<Partial<zProtoComponent>>  = [
+
     {
         title:"menu",
         metafields:[
@@ -85,7 +86,7 @@ let menuDev :Array<Partial<zProtoComponent>>  = [
                 "key":"body",
                 "type":"body",
                 navigation:{
-                    name:["menu","account","socialMedia","content","dashboard"],
+                    name:["menu","account","socialAcct","content","dashboard"],
                     confirm:"true",
                     type:["body"]
                 },
@@ -150,7 +151,7 @@ let menuDev :Array<Partial<zProtoComponent>>  = [
             ...Array(5).fill(null)
             .map((x:zProtoChildren,i)=>{
                 let values = ["Home","Account Login","Social Media Login","Post Content","Dashboard"]
-                let navNames =  ["/menu","/account","/socialMedia","/content","/dashboard"]
+                let navNames =  ["/menu","/account","/socialAcct","/content","/dashboard"]
                 return {
                     key:"menu-item a_p_p_MenuItem",
                     type: "anchor",
@@ -1486,10 +1487,117 @@ let accountDev :Array<Partial<zProtoComponent>>  = [
     }
 ]
 
+let socialAcctDev :Array<Partial<zProtoComponent>> = [
+    {
+        title:"socialAcct",
+        metafields:[
+            {
+                key:"body",
+                type:"body",
+                navigation:{
+                    name:["socialAcct"],
+                    confirm:"true",
+                    type:["body"]
+                },
+                options:{
+                    extras:{
+                        appSocialLogin:{
+                            confirm:"true",
+                            type:["body"]
+                        }
+                    },
+                    judima:{
+                        moving:{
+							point:"bottom",
+							target:'mainBackground',
+							coordinates:{x:50,y:70},
+							type:"custom"
+                        }
+                    }
+                }
+            },
+            {
+                key:"socialAcct a_p_p_SocialAcctPod",
+                type:"div",
+                split:8,
+                left:350,
+                height:600,
+                latch:{
+                    type:"display",
+                    display:{
+                        type:"target",
+                        name:"socialLogin"
+                    },
+                    zChildren:Array(10).fill(null)
+                    .map((x:any,i)=>{
+
+                        let classes = [
+                            "facebook  a_p_p_SocialAcctFBLoginButton",
+                            "twitter   a_p_p_SocialAcctTWLoginButton",
+                            "instagram a_p_p_SocialAcctIGLoginButton",
+                            "pinterest a_p_p_SocialAcctPILoginButton",
+                            "tumblr    a_p_p_SocialAcctTMLoginButton",
+                            "discord   a_p_p_SocialAcctDSLoginButton",
+                            "reddit    a_p_p_SocialAcctRDITLoginButton",
+                            "blogger   a_p_p_SocialAcctBLOGLoginButton",
+                            "twitch    a_p_p_SocialAcctTWLoginButton",
+                            "patreon   a_p_p_SocialAcctPTLoginButton"
+                        ]
+                        let text=  ["Facebook","Twitter","Instagram","Pinterest","Tumblr","Discord","Reddit","Blogger","Twitch","Patreon"]
+                        .map((x,i)=>{
+                            return "Continue With "+x
+                        })
+
+                        return {
+                            bool:"b" ,
+                            val:classes[i],
+                            css:{
+                                "z-index":5
+                            },
+                            text:text[i],
+                            logic:{
+                                desktop:{
+                                    width:()=>{return 320},
+                                    height:()=>{return 60},
+                                    top:[100,200,300,400,500][i%5],
+                                    left:[120,520][Math.floor(i/5)],
+                                },
+                                mobile:{
+                                    width:.2,
+                                    height:.2,
+                                    top:0,
+                                    left:0
+                                }
+                            },
+                            group:["socialLogin"]
+
+
+
+                        }
+                    })
+
+
+
+
+                },
+                options:{
+                    extras:{
+                        appSocialLogin:{
+                            type:["mainLogin","mainLoginPod"]
+                        }
+                    }
+                }
+            },
+
+        ]
+    },
+]
+
 let _Dev:Array<zProtoComponent>  =[
     ...backgroundDev,
     ...menuDev,
     ...accountDev,
+    ...socialAcctDev
 ]
 .map((x:any,i)=>{
 	x.type_slug = "forms"

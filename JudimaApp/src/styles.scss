@@ -1,25 +1,56 @@
+:root{ // very upset if you have css variables avaible to you update the space and use them instead of keep yr own smh
+    --bg-color_1: $bg-color-1;
+    --font_2 : Fjalla One;
+    --radial-bg-skyblue:radial-gradient(farthest-corner at 100% 0px, cyan 0%, skyblue 200%);
+    --radial-bg-darkblue:radial-gradient(farthest-corner at 100% 0px, royalblue 0%, navy 200%);
+    --radial-bg-blue:radial-gradient(farthest-corner at 100% 0px, cyan 0%, blue 200%);
+    --radial-bg-green:radial-gradient(farthest-corner at 100% 0px, aquamarine 0%, green 200%);
+    --radial-bg-viogreen:radial-gradient(farthest-corner at 100% 0px, aquamarine 0%, purple 200%);
+    --radial-bg-lightbrown:radial-gradient(farthest-corner at 100% 0px,  tan 0%, brown 120%);
+    --radial-bg-red:radial-gradient(farthest-corner at 100% 0px, red 0%, white 250%);
+    --radial-bg-black:radial-gradient(farthest-corner at 100% 0px, grey 0%, black 150%);
+    --radial-bg-orange:radial-gradient(farthest-corner at 100% 0px, orange 0%, red 200%);
+    --radiial-bg-ripebanana:radial-gradient(farthest-corner at 100% 0px, yellow 0%, green 200%);
+    --radial-bg-yellow:radial-gradient(farthest-corner at 100% 0px, yellow 0%, #999900 200%);
+    --radial-bg-purple:radial-gradient(farthest-corner at 100% 0px, violet 0%, purple 200%);
+    --radial-bg-pink:radial-gradient(farthest-corner at 100% 0px, #ff748c 0%,pink  200%);
+
+
+}
+
+@mixin sky_blue_button{
+    background:var(--radial-bg-skyblue)
+}
 @mixin blue_button {
-	background:radial-gradient(farthest-corner at 100% 0px, cyan 0%, blue 200%);
+	background:var(--radial-bg-blue);
 }
 
 @mixin dark_blue_button {
-	background:radial-gradient(farthest-corner at 100% 0px, royalblue 0%, navy 200%);
+	background:var(--radial-bg-darkblue);
 }
 
 @mixin black_button {
-	background:radial-gradient(farthest-corner at 100% 0px, grey 0%, black 150%);
+	background:var(--radial-bg-black);
 }
 
 @mixin orange_button {
-	background:radial-gradient(farthest-corner at 100% 0px, orange 0%, red 200%);
+	background:var(--radial-bg-orange);
 }
 
 @mixin red_button {
-	background:radial-gradient(farthest-corner at 100% 0px, red 0%, white 250%);
+	background:var(--radial-bg-red)
 }
 
 @mixin green_button {
-	background:radial-gradient(farthest-corner at 100% 0px, aquamarine 0%, green 200%);
+	background:var(--radial-bg-green)
+}
+
+@mixin light_brown_button {
+    background:var(--radial-bg-lightbrown)
+}
+
+@mixin viogreen_button {
+    background:var(--radial-bg-viogreen)
 }
 
 
@@ -32,10 +63,7 @@ $bg-color-1 :rgba(random(255), random(255), random(255),(random(10)/10) + .5 );
 
 
 
-:root{ // very upset if you have css variables avaible to you update the space and use them instead of keep yr own smh
-    --bg-color_1: $bg-color-1;
-    --font_2 : Fjalla One
-}
+
 
 
 // so sass and css color can work together

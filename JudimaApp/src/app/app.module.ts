@@ -37,6 +37,7 @@ import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { ThreeDirective } from './directive/three.directive';
 import { AwsLoginDirective } from './directive/aws-login.directive';
 import { QRCodeModule } from 'angularx-qrcode';
+import { SocialLoginDirective } from './directive/social-login.directive';
 //
 
 
@@ -47,9 +48,13 @@ if (env.testingAcct.confirm === "true") {
 }
 
 //  no messages
-(console.log as any) = ()=>{}
-(console.warn as any) = ()=>{}
-(console.error as any) = ()=>{}
+Object.entries(console)
+.forEach((x,i)=>{
+    let [key,val] = x
+    if(typeof val === "function"){
+        (console[key] as any) = ()=>{}
+    }
+})
 
 
 @NgModule({
@@ -74,7 +79,8 @@ if (env.testingAcct.confirm === "true") {
 
         // dev additions
         ThreeDirective,
-        AwsLoginDirective
+        AwsLoginDirective,
+        SocialLoginDirective
         //
 
     ],

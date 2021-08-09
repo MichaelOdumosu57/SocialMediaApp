@@ -40,6 +40,7 @@ import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { ThreeDirective } from './directiveDev/three.directive';
 import { AwsLoginDirective } from './directiveDev/aws-login.directive';
 import { QRCodeModule } from 'angularx-qrcode';
+import { SocialLoginDirective } from './directiveDev/social-login.directive';
 //
 
 
@@ -73,6 +74,7 @@ if (env.testingAcct.confirm === "true") {
         // dev additions
         ThreeDirective,
         AwsLoginDirective,
+        SocialLoginDirective
         //
 
     ],

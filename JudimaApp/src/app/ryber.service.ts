@@ -1611,7 +1611,7 @@ export class RyberService {
                         y:0,
                         z:1270
                     },
-                    "/socialMedia":{
+                    "/socialAcct":{
                         x:0,
                         y:0,
                         z:920

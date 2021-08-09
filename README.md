@@ -1,11 +1,11 @@
 # Summary
-* the overall purpose of the repo is to host the project for a website. The website will be a place where users can login and posts once then upload to all their social media. Great for content profoessionals. 
-
-Features include 
+* refer to README.md in ignore
+## Features include 
 * main posting page, create a post choose your platforms or messeger servcies, then upload, or schedule upload
 * work with your calendar to update your schedule
 * add "post (email) signature" , have your custom selection
-
+* have a collection of posts to be randomized 
+* message people on their platforms, and try to follow and make friend requests to grow the business
 
 
 Only members of the project can read the README.md from the ignore folder
@@ -15,6 +15,7 @@ Only members of the project can read the README.md from the ignore folder
 * Three.js  v0.130.1
 * Tween.js  v18.6.4
 * Angular  v11.2.13
+* angularx-qrcode v11.0.0
 
 ## Backend
 * Tornado v6.1
@@ -61,7 +62,6 @@ Only members of the project can read the README.md from the ignore folder
 
 ## Project Directory Mapping
 
-
 ### Frotend
 #### Configurations
 * we use __JudimaApp/src/envrionments__ - for dev and prod frontend configurations we includes configuations for features in the app
@@ -71,6 +71,7 @@ Only members of the project can read the README.md from the ignore folder
 *  __JudimaApp/backend/python/template.py__ is mainly a class for a route for the tornado server 
 *  __JudimaApp/backend/python/tornad_server.py__ - dev backend server
 * __JudimaApp/backend/python/tornado_heroku_server.py__ - prod backendserver
+
 #### Configurations
 * refer to README.md in ignore
 
@@ -95,6 +96,9 @@ Only members of the project can read the README.md from the ignore folder
 ### CI/CD
 * IN .circle is our config.yml, we make use of the company's Docker image as well as the circleci browser-build tools orb, as a general practice we packages our dependencies into the orb so we dont have to increased build times
 
+
+### Issues
+* say we have issues and we are looking for support with a library language or other 3rd party found here __JudimaApp/misc/issues
 ### Future Plans
 refer to README.md in ignore
 
@@ -128,9 +132,19 @@ refer to README.md in ignore
 
 # TODO
 * support for a firebase build option
+* if we can figure out how to get puffing billy to rediect the prod backend, rewrite local and ci tests to use prod instead of dev
+* work on responsiveness or platform integration
 
+## Template updates
+more mixins
 # Resources
 
+
+## Snippets
+* to generate a directive
+```ps1
+npx ng generate directive directiveDev/name
+```
 
 ## Codesandbox 
 [codesandbox frontend](https://codesandbox.io/s/socialmediaapp-0yfhm)

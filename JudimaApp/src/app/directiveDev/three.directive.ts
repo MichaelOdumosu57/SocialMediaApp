@@ -262,15 +262,6 @@ export class ThreeDirective {
                         })
 
 
-
-
-
-                        // submit
-                        // .forEach((y:any,j)=>{
-                        //     // take some action
-                        //     valx.subscriptions.push(of[])
-                        //     //
-                        // })
                         subscriptions.push(...valx.subscriptions)
                         //
 

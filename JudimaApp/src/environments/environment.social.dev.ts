@@ -37,7 +37,7 @@ export const environment:any = {
 
 
     testingAcct:{
-		confirm:"true", //true for hubspot false for drive
+		confirm:"false", //true for hubspot false for drive
 		capybara: { // remove this if not doing unit or e2e tests impt
 			main:"true",
 			url:"gdp",
@@ -49,7 +49,7 @@ export const environment:any = {
         tracingOrigins:["localhost",/^\//]
     },
 	navigation:{
-		startURL:"/menu",
+		startURL:"/socialAcct",
         type:"full" //[SPA,full],
 	},
     sectionDefault:{
@@ -96,14 +96,14 @@ export const environment:any = {
     },
 	backend:{
 		url:"http://127.0.0.1:3005",
-        
+
 	},
     three:{
         camera:{
             position:{
                 x:0,
                 y:0,
-                z:1700
+                z:920
             }
         }
     }

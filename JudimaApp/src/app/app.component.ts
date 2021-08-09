@@ -188,6 +188,10 @@ export class AppComponent implements OnInit, OnDestroy {
                         group:{},
                         suffix:"_aws_"
                     }
+                    co.metadata.socialLogin = {
+                        group:{},
+                        suffix:"_sL_"
+                    }
                     //
 
 

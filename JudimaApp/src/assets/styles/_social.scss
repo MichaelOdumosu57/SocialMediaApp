@@ -1,3 +1,6 @@
+@use "sass:math";
+@use "sass:list";
+
 * {
     font-family: Arial, Helvetica, sans-serif;
 }
@@ -35,6 +38,12 @@
     padding: 0 0 0 20px;
     font-size: 30px;
 
+
+}
+
+
+:root{
+    --white:white
 
 }
 @mixin rocket_ship{
@@ -189,7 +198,34 @@
     }
 }
 
+// social login
+@mixin social_login_button{
+    color :var(--white);
+    font-size: 24px;
+    font-weight: bold;
+    border-radius: 50px;
+}
 
+$counter: 0;
+// blue_button,sky_blue_button,light_brown_button,red_button,black_button
+// viogreen_button,orange_button;
+$social_login_button_colors:--radial-bg-blue,
+--radial-bg-skyblue,
+--radial-bg-lightbrown,
+--radial-bg-red,
+--radial-bg-black,
+--radial-bg-viogreen,
+--radial-bg-orange,
+--radial-bg-yellow,
+--radial-bg-purple,
+--radial-bg-pink
+;
+
+@function social_login_button_color($index){
+
+    @return list.nth($social_login_button_colors,$index);
+
+}
 .a_p_p_ {
 
     &Login{
@@ -359,5 +395,82 @@
 
 
         }
+    }
+
+    &SocialAcct{
+        &Pod{
+            @include glassmorphism;
+            background-color: white;
+            transition: opacity 3s;
+            opacity:0;
+        }
+
+        &FB,&TW,&IG,&PI,&TM,&DS,&RDIT,&BLOG,&TW,&PT{
+            &Login{
+                &Button{
+                    @each $item in $social_login_button_colors{
+                        $counter : $counter + 1;
+                        &:nth-of-type(#{$counter}){
+                            background: var(social_login_button_color($counter));
+                        }
+                    }
+                    @include social_login_button;
+                }
+            }
+        }
+
+        // &TW{
+        //     &Login{
+        //         &Button{
+        //             @include sky_blue_button;
+        //             @include social_login_button;
+        //         }
+        //     }
+        // }
+
+        // &IG{
+        //     &Login{
+        //         &Button{
+        //             @include light_brown_button;
+        //             @include social_login_button;
+        //         }
+        //     }
+        // }
+
+        // &PI{
+        //     &Login{
+        //         &Button{
+        //             @include red_button;
+        //             @include social_login_button;
+        //         }
+        //     }
+        // }
+
+        // &TM{
+        //     &Login{
+        //         &Button{
+        //             @include black_button;
+        //             @include social_login_button;
+        //         }
+        //     }
+        // }
+
+        // &DS{
+        //     &Login{
+        //         &Button{
+        //             @include viogreen_button;
+        //             @include social_login_button;
+        //         }
+        //     }
+        // }
+
+        // &RDIT{
+        //     &Login{
+        //         &Button{
+        //             @include viogreen_button;
+        //             @include social_login_button;
+        //         }
+        //     }
+        // }
     }
 }
