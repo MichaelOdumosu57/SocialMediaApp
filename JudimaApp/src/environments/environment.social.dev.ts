@@ -63,6 +63,9 @@ export const environment:any = {
         socialLogin:{
             addFBAcct:{
                 dummy:false
+            },
+            addAcct:{
+                dummy:false
             }
         },
 
@@ -102,6 +105,12 @@ export const environment:any = {
         },
         passChange:{
             dummy:false
+        },
+        //
+
+        // check Sign In
+        refreshUser:{
+            check:true
         }
         //
     },

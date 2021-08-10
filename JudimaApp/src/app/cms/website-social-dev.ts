@@ -1547,7 +1547,7 @@ let socialAcctDev :Array<Partial<zProtoComponent>> = [
                             "discord   a_p_p_SocialAcctDSLoginButton",
                             "reddit    a_p_p_SocialAcctRDITLoginButton",
                             "blogger   a_p_p_SocialAcctBLOGLoginButton",
-                            "twitch    a_p_p_SocialAcctTWLoginButton",
+                            "twitch    a_p_p_SocialAcctTWHLoginButton",
                             "patreon   a_p_p_SocialAcctPTLoginButton"
                         ]
                         let text=  ["Facebook","Twitter","Instagram","Pinterest","Tumblr","Discord","Reddit","Blogger","Twitch","Patreon"]
@@ -1624,79 +1624,89 @@ let socialAcctDev :Array<Partial<zProtoComponent>> = [
                     }
                 }
             },
-            {
-                key:"container a_p_p_SocialAcctFBLoginView",
-                type:"components",
-                split:8,
-                left:350,
-                height:600,
-                top:-600,
-                options:{
-                    extras:{
-                        options:{
-                            type:"awsLogin",
-                            lazyLoad:"true",
-                            component:{
-                                style:{
-                                    "background-color":"#fff",
-                                }
-                            },
-                            panels:[
-                                [
-                                    {
-                                        type:"title",
-                                        innerText:"Facebook",
-                                        class:"a_p_p_SocialAcctFBLoginViewStageTitle",
-                                        appSocialLogin:{
-                                            type:["FB1","FB1Bold"],
-                                        }
-                                    },
-                                    ...Array(2).fill(null)
-                                    .map((x:any,i)=>{
-                                        return {
-                                            type:"input",
-                                            class:"a_p_p_SocialAcctFBLoginViewStageInput",
-                                            placeholder:["Username","Password"][i],
-                                            appSocialLogin:{
-                                                type:["FB1","FB1Bold",["FB1User","FB1Pass"][i]]
-                                            },
-                                        }
-                                    }),
-                                    {
-                                        type:"button",
-                                        class:`a_p_p_SocialAcctFBLoginViewStageButton
-                                        a_p_p_SpecificBG1`,
-                                        innerText:`Submit`,
-                                        style:{
-                                            margin:"30px auto 0 auto",
-                                            height:"120px",
-                                            width: "230px",
-                                        },
-                                        appSocialLogin:{
-                                            type:["FB1","FB1Bold","FB1Submit"]
-                                        },
-
-                                    },
-                                ]
-                            ]
-                        },
-                        appSocialLogin:{
-                            type:["FB","FBBold","FBView1"]
-                        },
-                        appComponents:{
-                            type:["lazyLoad"],
-                            duplicateIgnore:"true",
-                            zSymbolNeeded:"true",
+            ...["FB","TW","IG","PI","TM","DS","RDIT","BLOG","TWH","PT"]
+            .map((x,i)=>{
+                return {
+                    prefix:x,
+                    name:["Facebook","Twitter","Instagram", "Pintrest", "Tumblr","Discord","Reddit","Blogger","Twitch","Patreon"][i]
+                }
+            })
+            .map((x:any,i)=>{
+                return {
+                    key:`container a_p_p_SocialAcct${x.prefix}LoginView`,
+                    type:"components",
+                    split:8,
+                    left:350,
+                    height:600,
+                    top:-600,
+                    options:{
+                        extras:{
                             options:{
-                                lazyLoad:{
-                                    delay:1000,
-                                    tryAgain:"true"
+                                type:"awsLogin",
+                                lazyLoad:"true",
+                                component:{
+                                    style:{
+                                        "background-color":"#fff",
+                                    }
+                                },
+                                panels:[
+                                    [
+                                        {
+                                            type:"title",
+                                            innerText:x.name,
+                                            class:`a_p_p_SocialAcct${x.prefix}LoginViewStageTitle`,
+                                            appSocialLogin:{
+                                                type:["1","1Bold"].map((y,j)=> `${x.prefix}${y}`),
+                                            }
+                                        },
+                                        ...Array(2).fill(null)
+                                        .map((xx:any,ii)=>{
+                                            return {
+                                                type:"input",
+                                                class:`a_p_p_SocialAcct${x.prefix}LoginViewStageInput`,
+                                                placeholder:["Username","Password"][ii],
+                                                appSocialLogin:{
+                                                    type:["1","1Bold",["1User","1Pass"][ii]]
+                                                    .map((y,j)=> `${x.prefix}${y}`)
+                                                },
+                                            }
+                                        }),
+                                        {
+                                            type:"button",
+                                            class:`a_p_p_SocialAcct${x.prefix}LoginViewStageButton
+                                            a_p_p_SpecificBG1`,
+                                            innerText:`Submit`,
+                                            style:{
+                                                margin:"30px auto 0 auto",
+                                                height:"120px",
+                                                width: "230px",
+                                            },
+                                            appSocialLogin:{
+                                                type:["1","1Bold","1Submit"].map((y,j)=> `${x.prefix}${y}`)
+                                            },
+
+                                        },
+                                    ]
+                                ]
+                            },
+                            appSocialLogin:{
+                                type:["","Bold","View1"].map((y,j)=> `${x.prefix}${y}`)
+                            },
+                            appComponents:{
+                                type:["lazyLoad"],
+                                duplicateIgnore:"true",
+                                zSymbolNeeded:"true",
+                                options:{
+                                    lazyLoad:{
+                                        delay:1000,
+                                        tryAgain:"true"
+                                    }
                                 }
                             }
                         }
                     }
                 }
-            },
+            })
 
         ]
     },

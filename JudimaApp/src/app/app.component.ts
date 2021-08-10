@@ -360,17 +360,21 @@ export class AppComponent implements OnInit, OnDestroy {
         // dev additions
 
         // check to see if the user is logged in
-        http.post(
-            env.backend.url,
-            JSON.stringify({
-                env:"refreshPage"
-            }),
-            {
-                withCredentials:true,
-                headers:{
-                    "Content-Type":"text/plain"
+        iif(
+            ()=> !env.dev.refreshUser.check,
+            of({access_token:"OK"}),
+            http.post(
+                env.backend.url,
+                JSON.stringify({
+                    env:"refreshPage"
+                }),
+                {
+                    withCredentials:true,
+                    headers:{
+                        "Content-Type":"text/plain"
+                    }
                 }
-            }
+            )
         )
         .pipe(
             take(1)
@@ -394,15 +398,15 @@ export class AppComponent implements OnInit, OnDestroy {
                         event:'click'
                     })
                 })),
-                wait$.pipe(
-                    delay(3000),
-                    tap(()=>{
-                    let fbManage = document.querySelectorAll(".a_p_p_SocialAcctLoginButtonPod")[0]
-                    eventDispatcher({
-                        element:fbManage,
-                        event:'click'
-                    })
-                })),
+                // wait$.pipe(
+                //     delay(3000),
+                //     tap(()=>{
+                //     let fbManage = document.querySelectorAll(".a_p_p_SocialAcctLoginButtonPod")[0]
+                //     eventDispatcher({
+                //         element:fbManage,
+                //         event:'click'
+                //     })
+                // })),
             )
             .subscribe()
         }

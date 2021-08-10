@@ -132,8 +132,10 @@ __ISSUE__ - if you set user prefreence for MFA it doesn't provide for refresh an
 ## Social Acct
 * test that I can navigate there from the menu and there are 10 buttons
 * make sure the user is signed in before continuing
+    * (optional) test that the user is signed in when they click an account button
 
 ### Facebook
+
 * test that if I try to login to the FB accout with a social account I am sent to the acct login page
     * optional, check if state is restored
 

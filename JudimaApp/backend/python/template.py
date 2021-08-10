@@ -22,10 +22,12 @@ import requests
 from datetime import datetime,timedelta
 from operator import attrgetter,itemgetter
 import traceback
+import re
 
 
 # aws cognito
 import boto3
+from botocore import errorfactory
 # import boto3.exceptions.ParamValidationError
 from botocore.exceptions import ParamValidationError
 
@@ -81,9 +83,15 @@ class my_ibm_language_client():
         print("---------------------------")
         print('my custom error at {}\n'.format(env))
         print(e.__class__.__name__)
-        print(traceback.print_exc())
+        # print(traceback.print_exc())
         print("---------------------------")
         if ParamValidationError == e:
+            return {
+                'status':401,
+                'message':"Unauthenticated"
+            }
+        elif e.__class__.__name__ == "NotAuthorizedException":
+
             return {
                 'status':401,
                 'message':"Unauthenticated"
@@ -102,6 +110,7 @@ class my_ibm_language_client():
         self.requests = requests
         self.lorem  = lorem
         self.jwt = jwt
+        self.re = re
 
         # login from facebook user
         self.auth_enum = {
@@ -136,13 +145,11 @@ class my_ibm_language_client():
 
                 return func(username,app_client_id,sec_key,secret_hash)
             except ParamValidationError as e:
-                print(e)
                 return {
                     'status':401,
                     'message':"Unauthenticated"
                 }
             except NotAuthorizedException as e:
-                print(e)
                 return {
                     'status':401,
                     'message':"Unauthenticated"
@@ -189,8 +196,7 @@ class my_ibm_language_client():
         hmac = self.hmac
         hashlib = self.hashlib
         base64 = self.base64
-
-
+        re = self.re
 
         env = data.get("env")
         username = data.get("user")
@@ -528,9 +534,11 @@ class my_ibm_language_client():
             except BaseException as e:
                 return self.error_handler(e,env)
         # socialLogin
-        elif(env == 'addFBAcct'):
+        pattern = re.compile(r'add(FB|TW|IG|PI|TM|DS|RDIT|BLOG|TWH|PT)Acct')
+        match = pattern.fullmatch(env)
+        if(match !=None):
             print('-------------------')
-            print('\n{}\n'.format('addFBAcct'))
+            print('\n{}\n'.format(env))
             try:
                 client.get_user(
                     AccessToken=access_token
@@ -542,10 +550,10 @@ class my_ibm_language_client():
                     }
                 }
 
-
-
             except BaseException as e:
                 return self.error_handler(e,env)
+
+
         #
         elif(env == 'adminDeleteAcct'):
             print('-------------------')

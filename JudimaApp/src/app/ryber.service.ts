@@ -1645,12 +1645,6 @@ export class RyberService {
     //dev additions
     socialLogin = {
         general:{
-            catchError:()=>{
-                alert("There was an error please contact support")
-                return of({message:"Error"})
-            }
-        },
-        addFBAcct:{
             catchError:(err)=>{
                 if(err.error === "Unauthenticated"){
                     // change the path
@@ -1663,7 +1657,20 @@ export class RyberService {
                     alert("Please Sign Into your Social Media Acct")
 
                 }
+                else{
+                    alert("There was an error please contact support")
+                }
                 return of({message:"Error"})
+            }
+        },
+        addFBAcct:{
+            catchError:(err)=>{
+                return this.socialLogin.general.catchError(err)
+            }
+        },
+        addTWAcct:{
+            catchError:(err)=>{
+                return this.socialLogin.general.catchError(err)
             }
         }
     }
