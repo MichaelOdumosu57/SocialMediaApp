@@ -1,0 +1,479 @@
+@use "sass:math";
+@use "sass:list";
+
+* {
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+// color font
+:root {
+    --modern-blue:#97dbe6
+}
+@font-face {
+    font-family: 'Chocolate Bar';
+    font-style: normal;
+    font-weight: 400;
+    src: url('../fonts/Chocolate_Bar.otf');
+
+}
+
+@font-face {
+    font-family: 'Roboto-Light';
+    font-style: normal;
+    font-weight: 400;
+    src: url('../fonts/Roboto-Light.ttf');
+
+}
+
+@font-face {
+    font-family: 'Roboto-Thin';
+    font-style: normal;
+    font-weight: 400;
+    src: url('../fonts/Roboto-Thin.ttf');
+
+}
+
+@mixin input{
+    border-radius: 10px;
+    padding: 0 0 0 20px;
+    font-size: 30px;
+
+
+}
+
+
+:root{
+    --white:white
+
+}
+@mixin rocket_ship{
+    clip-path: polygon(2% 37%, 8% 30%, 7% 45%, 7% 54%, 1% 59%, 6% 66%, 65% 67%, 89% 46%, 69% 28%, 43% 26%, 42% 15%, 38% 9%, 35% 27%, 8% 28%, 7% 44%);
+}
+
+@mixin login_button {
+    z-index:5;
+    padding:10px;
+    // border-radius: 5px;
+    // border-bottom-right-radius:50px;
+    font-size: 24px;
+    @include rocket_ship;
+
+}
+@mixin login_containers{
+    @include glassmorphism;
+    background-color: white;
+    transition: opacity 3s;
+    opacity:.5
+}
+
+
+@mixin login_flow{
+
+    &Component{
+        @include outline;
+
+    }
+    &Container{
+        @include login_containers;
+    }
+
+    &Title{
+        font-size: 30px;
+        text-align: center;
+    }
+
+
+
+    &Input{
+        @include input;
+    }
+
+    &Text{
+        font-size: 20px;
+
+        &Error{
+            color:red;
+            font-size: 20px;
+        }
+
+
+    }
+
+
+    &Button{
+        @include green_button;
+        @include login_button;
+
+        &Resend{
+            @include blue_button;
+            @include login_button;
+        }
+    }
+}
+[class*='a_p_p_Login']{
+
+    opacity:0;
+    transition: opacity 3s;
+}
+@mixin login_component_panel {
+    &Component{
+
+        &Stage{
+            width: 100%;
+            height: 100%;
+            top: 0;
+            position: absolute;
+            opacity:1;
+        }
+        &Overlay{
+            display:flex;
+            flex-wrap: wrap;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            position: absolute;
+            opacity:1;
+            align-content:flex-start;
+            // justify-content:center;
+
+
+
+            & input {
+                flex: 0 0 70%;
+                margin:50px 0 0 80px;
+                height:50px;
+                // width:65%
+            }
+        }
+
+        &Container{
+            @include login_containers;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            position: absolute;
+        }
+
+
+
+        &Input{
+            @include input;
+        }
+
+        &Button{
+
+            @include green_button;
+            @include login_button;
+
+            &Resend{
+                @include blue_button;
+                @include login_button;
+            }
+
+            &Danger{
+                @include red_button;
+                @include login_button;
+            }
+        }
+
+        &Text{
+            font-size: 20px;
+
+            &Error{
+                color:red;
+                font-size: 20px;
+            }
+
+
+        }
+
+
+        &Title{
+            text-align: center;
+
+            // width:90%
+        }
+
+
+    }
+}
+
+// social login
+@mixin social_login_button{
+    color :var(--white);
+    font-size: 24px;
+    font-weight: bold;
+    border-radius: 50px;
+}
+
+$counter: 0;
+
+$social_login_button_colors:
+0,0,0, //done because of odd behavior with nth-child
+--radial-bg-blue,
+--radial-bg-skyblue,
+--radial-bg-lightbrown,
+--radial-bg-red,
+--radial-bg-black,
+--radial-bg-viogreen,
+--radial-bg-orange,
+--radial-bg-yellow,
+--radial-bg-purple,
+--radial-bg-pink
+;
+
+@function social_login_button_color($index){
+
+    @return list.nth($social_login_button_colors,$index);
+
+}
+.a_p_p_ {
+    &Specific{
+        &BG1{
+            background:var(--radial-bg-blue);
+        }
+    }
+    &Login{
+
+        &Container{
+            @include login_containers;
+        }
+
+        @include login_component_panel;
+
+
+
+        &Create{
+            &Button{
+                @include green_button;
+                @include login_button;
+            }
+
+            &One,&Two,&Three,&Four{
+
+                @include login_flow;
+
+
+            }
+        }
+
+        &SignIn{
+            &Button{
+                @include blue_button;
+                @include login_button;
+
+            }
+
+            &One,&Two,&Three,&Four{
+
+                @include login_flow;
+
+            }
+        }
+
+        &Password{
+            &Button{
+                @include black_button;
+                @include login_button;
+                color :white;
+            }
+
+            &One,&Two,&Three,&Four{
+
+                @include login_flow;
+
+            }
+        }
+
+        &Delete{
+            &Button{
+                @include red_button;
+                @include login_button;
+            }
+
+            &One,&Two,&Three,&Four{
+
+                @include login_component_panel;
+
+                &Container{
+                    @include login_containers;
+                    height:100%;
+
+                }
+
+                &Title{
+                    font-size: 30px;
+                    text-align: center;
+                }
+
+
+
+                &Input{
+                    @include input;
+                }
+
+                &Text{
+                    font-size: 20px;
+
+                    &Error{
+                        color:red;
+                        font-size: 20px;
+                    }
+
+
+                }
+
+
+                &Button{
+                    @include green_button;
+                    @include login_button;
+
+                    &Resend{
+                        @include blue_button;
+                        @include login_button;
+                    }
+                }
+
+            }
+        }
+
+
+        &QR{
+            &Main{}
+        }
+    }
+    // three.js :) :)
+    &Three{
+        &Background{
+            &Main{
+                top:0;
+                left:0;
+                // width:100%
+            }
+        }
+    }
+    //
+
+    &Menu{
+        &Title{
+            font-family: 'Chocolate Bar';
+            color: DeepPink;
+            text-align: center;
+            font-size: 48px;
+
+        }
+
+        &SubTitle{
+            font-family: 'Roboto-Light';
+            margin: 0 0 30px 0 !important;
+            color: #e0e0e0;
+            user-select: none;
+            box-sizing: border-box;
+            margin: 0;
+            font-weight: 300;
+            font-size: 30px;
+            letter-spacing: 2px;
+            padding-right: 1em;
+            background: linear-gradient(240deg,#97dbe6, #97dbe6 75%, transparent);
+            -webkit-background-clip: text;
+            background-clip:text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        &Item{
+            color:var(--modern-blue);
+            font-size:32px;
+            margin: 0 0 30px 0 !important;
+            font-weight: 100;
+            font-family: "Roboto-Thin";
+            transition: font-family 2s;
+            // flex: 1 0 auto;
+
+
+        }
+        &Container{
+            @include glassmorphism;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start ;
+            padding: 20px;
+
+
+        }
+    }
+
+    &SocialAcct{
+        &Pod{
+            @include glassmorphism;
+            background-color: white;
+            transition: opacity 3s;
+            opacity:0;
+        }
+
+        &FB,&TW,&IG,&PI,&TM,&DS,&RDIT,&BLOG,&TW,&PT,&{
+            &Login{
+                &Button{
+
+                    flex:1 0 100%;
+                    @include social_login_button;
+                    display:flex;
+                    align-items:center;
+                    &Pod{
+                        transition: opacity 3s;
+                        opacity:0;
+                        @each $item in $social_login_button_colors{
+                            $counter : $counter + 1;
+
+                            &:nth-child(#{$counter}) >
+                            .a_p_p_SocialAcctLoginButtonView >
+                            button {
+                                @debug $counter;
+                                background: var(social_login_button_color($counter));
+                            }
+                        }
+                    }
+
+                    &View{
+                        @include flex-column-center;
+                        // @include outline;
+                        // opacity:0;
+                        align-items: stretch;
+                    }
+                }
+
+                &View{
+                    // @include outline;
+                    opacity:0;
+
+                    &Stage{
+                        &Title{
+                            flex:1 0 100%;
+                            text-align: center;
+                        }
+
+
+                        &Input{
+                            @include input;
+                        }
+
+                        &Button{
+                            @include login_button;
+                        }
+                    }
+
+                }
+
+
+
+                &Icon{
+                    border-radius: 50px;
+                    height:40px;
+                    width: 40px;
+                }
+            }
+        }
+
+
+
+    }
+}

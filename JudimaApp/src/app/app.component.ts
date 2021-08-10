@@ -385,6 +385,7 @@ export class AppComponent implements OnInit, OnDestroy {
 
         // test code
             // you want this removed
+        if(!env.production){
             let wait$ = of([]).pipe(delay(500))
             concat(
                 wait$.pipe(tap(()=>{
@@ -404,7 +405,7 @@ export class AppComponent implements OnInit, OnDestroy {
                 })),
             )
             .subscribe()
-
+        }
         //
 
         //

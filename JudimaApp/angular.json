@@ -104,16 +104,16 @@
                         },
                         "github": {
                             "outputPath":"../docs",
-                            "baseHref": "/JudimaApp/",
-                            "deployUrl":"/JudimaApp/",
+                            "baseHref": "/SocialMediaApp/",
+                            "deployUrl":"/SocialMediaApp/",
                             "fileReplacements": [
                                 {
                                     "replace": "src/app/website.ts",
-                                    "with": "src/app/cms/website-judima-dev.ts"
+                                    "with": "src/app/cms/website-social-dev.ts"
                                 },
                                 {
                                     "replace": "src/environments/environment.ts",
-                                    "with": "src/environments/environment.judima.prod.ts"
+                                    "with": "src/environments/environment.social.prod.ts"
                                 }
                             ],
                             "assets": [
@@ -219,8 +219,6 @@
                                 }
                             ]
                         }
-
-
 
                     }
                 },

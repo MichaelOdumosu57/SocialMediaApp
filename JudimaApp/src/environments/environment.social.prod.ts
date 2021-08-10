@@ -59,6 +59,14 @@ export const environment:any = {
 
 	// dev additions
     dev:{
+
+        socialLogin:{
+            addFBAcct:{
+                dummy:false
+            }
+        },
+
+        
         // delete account
         deleteSignIn:{
             dummy:false

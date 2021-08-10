@@ -1,10 +1,12 @@
 import { Directive, ElementRef, HostListener, Input, Renderer2, TemplateRef, ViewContainerRef, ViewRef, EmbeddedViewRef, ViewChildren, ChangeDetectorRef } from '@angular/core';
 import { RyberService } from '../ryber.service'
 import { fromEvent, from, Subscription, Subscriber, of, combineLatest, pipe, iif } from 'rxjs';
-import { deltaNode, eventDispatcher, numberParse, objectCopy, navigationType,judimaDirective,flatDeep } from '../customExports'
+import { deltaNode, eventDispatcher, numberParse, objectCopy, navigationType,judimaDirective,flatDeep,changePanel } from '../customExports'
 import { catchError, delay, first, take,concatMap,tap, exhaustMap, takeWhile, filter } from 'rxjs/operators'
 import { environment as env } from '../../environments/environment'
 import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { resourceLimits } from 'worker_threads';
+
 
 
 @Directive({
@@ -46,7 +48,7 @@ export class AwsLoginDirective {
                 myThis:this,
                 featureFn:(devObj)=>{
                     let {group,subscriptions} = devObj
-                    let {ryber,ref,zChildren,http,changePanel,extras}= this
+                    let {ryber,ref,zChildren,http,extras}= this
                     //  work goes here
                     Object.entries(group)
                     .forEach((x:any,i)=>{
@@ -164,6 +166,8 @@ export class AwsLoginDirective {
 
                         })
 
+
+
                         // delete account
                         delAcct
                         .forEach((y:any,j)=>{
@@ -220,7 +224,8 @@ export class AwsLoginDirective {
 
 
                                     let deletePanels = flatDeep(component.extras.options.panels,Infinity)
-                                    let [delete1Bold,delete1,delete1User,delete1Pass,delete1Submit,delete1Error,delete1TOTP,delete2,delete2Bold,delete2Submit,delete2Cancel,delete3,delete3Bold] = Array(13).fill(null).map( _=>[]);
+                                    let [delete1Bold,delete1,delete1User,delete1Pass,delete1Submit,delete1Error,delete1TOTP,delete2,delete2Bold,delete2Submit,delete2Cancel,delete3,delete3Bold] =
+                                    Array(13).fill(null).map( _=>[]);
                                     let myDelete = {delete1Bold,delete1,delete1User,delete1Pass,delete1Submit,delete1Error,delete1TOTP,delete2,delete2Bold,delete2Submit,delete2Cancel,delete3,delete3Bold}
                                     Object.entries(myDelete)
                                     .forEach((z:any,k)=>{
@@ -282,7 +287,7 @@ export class AwsLoginDirective {
 
                                                     if(result.message === 'OK'){
                                                         ryber.appCO0.metadata.awsLogin.user = delete1User[0].value
-                                                        ryber.appCO0.metadata.awsLogin.access_token = result.access_token
+                                                        ryber.appCO0.metadata.awsLogin.accessToken = result.access_token
                                                         if(env.testingAcct.confirm === "true"){
                                                             window.judima_environment.accessToken = result.access_token
                                                         }
@@ -315,8 +320,14 @@ export class AwsLoginDirective {
                                                     env.backend.url,
                                                     {
                                                         env:"deleteAcct",
-                                                        access_token: ryber.appCO0.metadata.awsLogin.access_token
+                                                        access_token: ryber.appCO0.metadata.awsLogin.accessToken
                                                     },
+                                                    {
+                                                        withCredentials:true,
+                                                        headers: {
+                                                            "Content-Type": "text/plain"
+                                                        }
+                                                    }
                                                 )
                                             )
                                             .pipe(
@@ -328,7 +339,7 @@ export class AwsLoginDirective {
 
                                                     if(result.message === 'OK'){
                                                         ryber.appCO0.metadata.awsLogin.user = ""
-                                                        ryber.appCO0.metadata.awsLogin.access_token = ""
+                                                        ryber.appCO0.metadata.awsLogin.accessToken = ""
                                                         if(env.testingAcct.confirm === "true"){
                                                             window.judima_environment.accessToken = ""
                                                         }
@@ -439,7 +450,7 @@ export class AwsLoginDirective {
 
                                     if(result.message === "OK"){
                                         ryber.appCO0.metadata.awsLogin.user = zChildren[password1User[0]].element.value
-                                        ryber.appCO0.metadata.awsLogin.access_token = result.access_token
+                                        ryber.appCO0.metadata.awsLogin.accessToken = result.access_token
                                         if(env.testingAcct.confirm === "true"){
                                             window.judima_environment.accessToken = result.access_token
                                         }
@@ -500,7 +511,7 @@ export class AwsLoginDirective {
                                                 old_pass:zChildren[password2OldPass[0]].element.value,
                                                 new_pass:zChildren[password2NewPass[0]].element.value,
                                                 confirm_pass:zChildren[password2ConfirmPass[0]].element.value,
-                                                access_token:ryber.appCO0.metadata.awsLogin.access_token
+                                                access_token:ryber.appCO0.metadata.awsLogin.accessToken
                                             },
                                         )
                                     )
@@ -520,12 +531,12 @@ export class AwsLoginDirective {
 
                                     if(result.message === "OK"){
                                         ryber.appCO0.metadata.awsLogin.user = zChildren[password1User[0]].element.value
-                                        ryber.appCO0.metadata.awsLogin.access_token = result.access_token
+                                        ryber.appCO0.metadata.awsLogin.accessToken = result.access_token
                                         if(env.testingAcct.confirm === "true"){
                                             window.judima_environment.accessToken = result.access_token
                                         }
 
-                                        this.changePanel({
+                                        changePanel({
                                             closing:password2,
                                             zChildren,
                                             open:password3,
@@ -605,7 +616,7 @@ export class AwsLoginDirective {
 
                                     if(result.message === "OK"){
                                         ryber.appCO0.metadata.awsLogin.user = zChildren[signIn1User[0]].element.value
-                                        ryber.appCO0.metadata.awsLogin.access_token = result.access_token
+                                        ryber.appCO0.metadata.awsLogin.accessToken = result.access_token
                                         if(env.testingAcct.confirm === "true"){
                                             window.judima_environment.accessToken = result.access_token
                                         }
@@ -909,6 +920,12 @@ export class AwsLoginDirective {
                                                 env:"QR_TOTP",
                                                 totp:zChildren[create2TOTP[0]].element.value,
                                                 access_token:ryber.appCO0.metadata.awsLogin.accessToken
+                                            },
+                                            {
+                                                withCredentials:true,
+                                                headers:{
+                                                    "Content-Type":"text/plain"
+                                                }
                                             }
                                         )
                                     )
@@ -956,57 +973,7 @@ export class AwsLoginDirective {
 
     }
 
-    private changePanel(devObj:{type?:string,closing: string[], zChildren?: any, open: string[], openBold: string[],ref:ChangeDetectorRef}) {
-        let {closing,zChildren,open,openBold,ref,type} = devObj
 
-        if(type === "component"){
-            closing
-            .forEach((z: any, k) => {
-                z.style.opacity = 0;
-                z.style["z-index"] = 4;
-                if(z.stage){
-                    Object.assign(z.stage.style,z.style)
-                }
-            });
-
-            open
-            .forEach((z: any, k) => {
-                z.style.opacity = .5;
-                z.style["z-index"] = 5;
-                if(z.stage){
-                    Object.assign(z.stage.style,z.style)
-                }
-            });
-
-            openBold
-            .forEach((z: any, k) => {
-                z.style.opacity = 1;
-                if(z.stage){
-                    Object.assign(z.stage.style,z.style)
-                }
-            });
-        }
-
-        else{
-            closing
-            .forEach((z: any, k) => {
-                zChildren[z].css.opacity = 0;
-                zChildren[z].css["z-index"] = 4;
-            });
-
-            open
-            .forEach((z: any, k) => {
-                zChildren[z].css.opacity = .5;
-                zChildren[z].css["z-index"] = 5;
-            });
-
-            openBold
-            .forEach((z: any, k) => {
-                zChildren[z].css.opacity = 1;
-            });
-        }
-        ref.detectChanges()
-    }
 
     ngOnDestroy() {
 
