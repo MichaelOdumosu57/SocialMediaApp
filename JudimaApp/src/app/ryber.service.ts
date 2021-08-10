@@ -1632,7 +1632,9 @@ export class RyberService {
             awsLogin:{
                 accessToken:null,
                 accessTokenSub:new Subject(),
-
+                FaceB:{
+                    accessToken:null
+                }
             },
             //
 
@@ -1663,7 +1665,7 @@ export class RyberService {
                 return of({message:"Error"})
             }
         },
-        addFBAcct:{
+        addFaceBAcct:{
             catchError:(err)=>{
                 return this.socialLogin.general.catchError(err)
             }

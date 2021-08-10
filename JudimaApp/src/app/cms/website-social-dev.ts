@@ -1536,10 +1536,10 @@ let socialAcctDev :Array<Partial<zProtoComponent>> = [
                     .map((x:any,i)=>{
 
                         let prefixes = [
-                            "FB","TW","IG","PI","TM","DS","RDIT","BLOG","TW","PT"
+                            "FaceB","TW","IG","PI","TM","DS","RDIT","BLOG","TW","PT"
                         ]
                         let classes = [
-                            "facebook  a_p_p_SocialAcctFBLoginButton",
+                            "facebook  a_p_p_SocialAcctFaceBLoginButton",
                             "twitter   a_p_p_SocialAcctTWLoginButton",
                             "instagram a_p_p_SocialAcctIGLoginButton",
                             "pinterest a_p_p_SocialAcctPILoginButton",
@@ -1603,7 +1603,7 @@ let socialAcctDev :Array<Partial<zProtoComponent>> = [
                                 },
                                 appSocialLogin:{
                                     type:["mainLogin","mainLoginBold",socialLogin[i].type]
-                                }
+                                },
                             },
                             group:["socialLogin"]
 
@@ -1624,7 +1624,7 @@ let socialAcctDev :Array<Partial<zProtoComponent>> = [
                     }
                 }
             },
-            ...["FB","TW","IG","PI","TM","DS","RDIT","BLOG","TWH","PT"]
+            ...["FaceB","TW","IG","PI","TM","DS","RDIT","BLOG","TWH","PT"]
             .map((x,i)=>{
                 return {
                     prefix:x,

@@ -173,6 +173,8 @@ npx ng generate directive directiveDev/name
 
 [aws cognito idp docs](https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/cognito-idp.html#)
 
+[good to store credentials in aws cognito](https://stackoverflow.com/questions/50601827/is-a-custom-attribute-in-cognito-user-pool-the-proper-place-to-store-dynamic-use)
+
 
 ## Docker
 [install docker ubntu 20.04 vm](https://www.digitalocean.com/community/tutorials/how-to-install-and-use-docker-on-ubuntu-20-04)
@@ -198,6 +200,7 @@ npx ng generate directive directiveDev/name
 [capybara](https://rubydoc.info/github/jnicklas/capybara)
 
 [chrome command line swithces](https://peter.sh/experiments/chromium-command-line-switches/)
+
 
 
 

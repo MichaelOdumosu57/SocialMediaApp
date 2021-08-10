@@ -19,7 +19,7 @@ __ISSUE__ - the orb scripts fail while building the docker image
     * test that on navigation we lazyload again if need be
 
 # E2E Tests
-
+ 
 
 ## Errors
 * use sentry to deal with any unexpected errors
@@ -133,6 +133,7 @@ __ISSUE__ - if you set user prefreence for MFA it doesn't provide for refresh an
 * test that I can navigate there from the menu and there are 10 buttons
 * make sure the user is signed in before continuing
     * (optional) test that the user is signed in when they click an account button
+* tests that no logs give up the access tokens!!
 
 ### Facebook
 

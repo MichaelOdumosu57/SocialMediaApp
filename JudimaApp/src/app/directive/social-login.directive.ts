@@ -45,9 +45,9 @@ export class SocialLoginDirective {
         if (this.extras?.confirm === 'true' && this.extras?.type.includes("body")) {
 
             // // optional script loading
-            // let loadedScripts =this.ryber.appGetScripts({
-            //     scriptStrings:["ParticlesJS"]
-            // })
+            let loadedScripts =this.ryber.appGetScripts({
+                scriptStrings:["FB.js SDK"]
+            })
             // //
 
             onInit({
@@ -67,10 +67,10 @@ export class SocialLoginDirective {
                         //
 
                         //facebook
-                        let FBManage:Array<string> = Array.from(valx.types['FBManage'] || [])
-                        let FB:Array<string> = Array.from(valx.types['FB'] || [])
-                        let FBBold:Array<string> = Array.from(valx.types['FBBold'] || [])
-                        let FBView1:Array<string> = Array.from(valx.types['FBView1'] || [])
+                        let FaceBManage:Array<string> = Array.from(valx.types['FaceBManage'] || [])
+                        let FaceB:Array<string> = Array.from(valx.types['FaceB'] || [])
+                        let FaceBBold:Array<string> = Array.from(valx.types['FaceBBold'] || [])
+                        let FaceBView1:Array<string> = Array.from(valx.types['FaceBView1'] || [])
                         //
 
                         // twitter
@@ -140,7 +140,7 @@ export class SocialLoginDirective {
                         .forEach((y:any,j)=>{
 
                             // hide other login flows
-                            let loginFlows = [...mainLogin,FBView1,TWView1,IGView1,PIView1,TMView1,DSView1,RDITView1,BLOGView1,TWHView1,PTView1]
+                            let loginFlows = [...mainLogin,FaceBView1,TWView1,IGView1,PIView1,TMView1,DSView1,RDITView1,BLOGView1,TWHView1,PTView1]
 
                             loginFlows
                             .forEach((z:any,k)=>{
@@ -179,12 +179,12 @@ export class SocialLoginDirective {
                         })
 
 
-                        FBManage
+                        FaceBManage
                         .forEach((y:any,j)=>{
-
+                            console.log(FB)
                             let relatedLazyLoadSub = ryber.appCO0.metadata.components.lazyLoad.current
                             .pipe(
-                                filter((data:any)=>{ return data.zSymbol === FBView1[0] && data.co === extras.co}),
+                                filter((data:any)=>{ return data.zSymbol === FaceBView1[0] && data.co === extras.co}),
                                 take(1), //should it be here
                                 switchMap((result)=>{
 
@@ -194,11 +194,12 @@ export class SocialLoginDirective {
                             )
                             .subscribe({
                                 next:(result:any)=>{
+
                                     changePanel({
                                         closing:[...mainLogin,...mainLoginBold],
                                         zChildren,
-                                        open:FB,
-                                        openBold:FBBold,
+                                        open:FaceB,
+                                        openBold:FaceBBold,
                                         ref
                                     })
 
@@ -210,7 +211,7 @@ export class SocialLoginDirective {
 
                         })
 
-                        FBView1
+                        FaceBView1
                         .forEach((y:any,j)=>{
                             let component= zChildren[y]
                             let lazyLoadSub = ryber.appCO0.metadata.components.lazyLoad.current
@@ -220,15 +221,15 @@ export class SocialLoginDirective {
                             .subscribe({
                                 next:(result:any)=>{
 
-                                    let FBPanel = flatDeep(component.extras.options.panels,Infinity)
-                                    let [FB1,FB1Bold,FB1User,FB1Pass,FB1Submit] =
+                                    let FaceBPanel = flatDeep(component.extras.options.panels,Infinity)
+                                    let [FaceB1,FaceB1Bold,FaceB1User,FaceB1Pass,FaceB1Submit] =
                                     Array(5).fill(null).map( _=>[]);
-                                    let myFB = {FB1,FB1Bold,FB1User,FB1Pass,FB1Submit}
-                                    Object.entries(myFB)
+                                    let myFaceB = {FaceB1,FaceB1Bold,FaceB1User,FaceB1Pass,FaceB1Submit}
+                                    Object.entries(myFaceB)
                                     .forEach((z:any,k)=>{
 
                                         let [keyz,valz] = z
-                                        FBPanel
+                                        FaceBPanel
                                         .forEach((w:any,h)=>{
 
                                             if(w.appSocialLogin.type.includes(keyz) ){
@@ -242,15 +243,15 @@ export class SocialLoginDirective {
                                     //show the probably only panel
                                     changePanel({
                                         closing:[],
-                                        open:FB1,
-                                        openBold:FB1Bold,
+                                        open:FaceB1,
+                                        openBold:FaceB1Bold,
                                         ref,
                                         type:"component"
                                     })
                                     //
 
                                     // manage the fb account to the app
-                                    FB1Submit
+                                    FaceB1Submit
                                     .forEach((z:any,k)=>{
                                         z.click = (evt:Event) =>{
 
@@ -260,15 +261,15 @@ export class SocialLoginDirective {
                                                 http.post(
                                                     env.backend.url,
                                                     {
-                                                        env:"addFBAcct",
-                                                        user:FB1User[0].value || "",
-                                                        pass:FB1Pass[0].value || "",
+                                                        env:"addFaceBAcct",
+                                                        user:FaceB1User[0].value || "",
+                                                        pass:FaceB1Pass[0].value || "",
                                                         access_token: ryber.appCO0.metadata.awsLogin.accessToken
                                                     },
                                                 )
                                             )
                                             .pipe(
-                                                catchError(ryber.socialLogin.addFBAcct.catchError),
+                                                catchError(ryber.socialLogin.addFaceBAcct.catchError),
                                                 takeWhile((val:any)=>{return val.message !== 'OK'},true)
                                             )
                                             .subscribe({
@@ -1304,7 +1305,7 @@ export class SocialLoginDirective {
                     })
                     //
                 },
-                // loadedScripts
+                loadedScripts
             })
         }
 

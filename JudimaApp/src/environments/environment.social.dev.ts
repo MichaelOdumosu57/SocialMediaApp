@@ -115,7 +115,8 @@ export const environment:any = {
         //
     },
 	backend:{
-		url:"http://127.0.0.1:3005",
+		// url:"http://127.0.0.1:3005",
+		url:"http://localhost:3005",
 
 	},
     three:{

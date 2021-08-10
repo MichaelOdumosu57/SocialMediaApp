@@ -30,6 +30,7 @@ declare global {
     //dev additions
     var orbitControls:Function
     var TWEEN:any
+    var FB:any
     //
 
 }
@@ -64,21 +65,19 @@ export class AppComponent implements OnInit, OnDestroy {
         ryber.appCO0.metadata.scripts.push(
             ...ryber.appAddScripts({
                 scripts:[
-					// {
-					// 	src:"https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v10.0&appId=749733915701523&autoLogAppEvents=1",
-					// 	name:"FB.js SDK",
-                    //     intregity:"sha256-1x/wlpsdafW6TS+0WPyfZbFQ3r2/sklAEyCAmaHJ7pw=",
-                    //     crossorigin:"anonymous",
-					// 	defer:"false",
-                    //     async:"false",
-                    //     nonce:"LZH6OkJE",
-                    //     placement:{
-                    //         appendChild:document.body
-                    //     }
-					// },
-                ].filter((x:any,i)=>{
-                    return i !== 0
-                })
+					{
+						src:"https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v11.0&appId=381453213335244&autoLogAppEvents=1",
+						name:"FB.js SDK",
+                        intregity:"sha256-1x/wlpsdafW6TS+0WPyfZbFQ3r2/sklAEyCAmaHJ7pw=",
+                        crossorigin:"anonymous",
+						defer:"false",
+                        async:"false",
+                        nonce:"LZH6OkJE",
+                        placement:{
+                            appendChild:document.body
+                        }
+					},
+                ]
             })
         )
         //
@@ -381,7 +380,17 @@ export class AppComponent implements OnInit, OnDestroy {
         )
         .subscribe({
             next:(result:any)=>{
+                // set the access tokens
                 ryber.appCO0.metadata.awsLogin.accessToken  = result.access_token
+                result.social_access_tokens
+                .forEach((x:any,i)=>{
+                    let accessKey = x.Name
+                    .split(/_access_token$/)[0]
+                    .split(/^custom:/)[1]
+                    ryber.appCO0.metadata.awsLogin[accessKey].accessToken =x.Value
+                })
+                console.log(ryber.appCO0.metadata.awsLogin)
+                //
             },
             error:ryber.aws.refreshPage.error
         })
@@ -399,7 +408,7 @@ export class AppComponent implements OnInit, OnDestroy {
                     })
                 })),
                 // wait$.pipe(
-                //     delay(3000),
+                //     delay(5000),
                 //     tap(()=>{
                 //     let fbManage = document.querySelectorAll(".a_p_p_SocialAcctLoginButtonPod")[0]
                 //     eventDispatcher({

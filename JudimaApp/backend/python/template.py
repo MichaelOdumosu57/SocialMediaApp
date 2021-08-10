@@ -83,9 +83,9 @@ class my_ibm_language_client():
         print("---------------------------")
         print('my custom error at {}\n'.format(env))
         print(e.__class__.__name__)
-        # print(traceback.print_exc())
+        print(traceback.print_exc())
         print("---------------------------")
-        if ParamValidationError == e:
+        if e.__class__.__name__ == 'ParamValidationError':
             return {
                 'status':401,
                 'message':"Unauthenticated"
@@ -219,6 +219,10 @@ class my_ibm_language_client():
         new_pass = data.get('new_pass')
         confirm_pass = data.get('confirm_pass')
         ParamValidationError = self.ParamValidationError
+        #
+
+        # facebook
+        FaceB = data.get('FaceB')
         #
 
         if(env == 'createAccount'):
@@ -501,12 +505,21 @@ class my_ibm_language_client():
                     # refresh_token = response.get('AuthenticationResult').get('RefreshToken')
                     #
 
-
+                    my_user = client.admin_get_user(
+                        Username=refresh_user,
+                        UserPoolId=user_pool_id,
+                    )
+                    a_t_pattern = re.compile(r'^custom:.+access_token')
+                    social_access_tokens = list(filter(
+                        lambda x: a_t_pattern.fullmatch(x.get('Name')) != None,
+                        my_user.get('UserAttributes')
+                    ))
 
                     return {
                         'status':200,
                         'message':{
                             'message':'OK',
+                            'social_access_tokens':social_access_tokens,
                             "access_token":access_token,
                         }
                     }
@@ -534,15 +547,27 @@ class my_ibm_language_client():
             except BaseException as e:
                 return self.error_handler(e,env)
         # socialLogin
-        pattern = re.compile(r'add(FB|TW|IG|PI|TM|DS|RDIT|BLOG|TWH|PT)Acct')
+        pattern = re.compile(r'add(FaceB|TW|IG|PI|TM|DS|RDIT|BLOG|TWH|PT)Acct')
         match = pattern.fullmatch(env)
         if(match !=None):
             print('-------------------')
             print('\n{}\n'.format(env))
             try:
-                client.get_user(
-                    AccessToken=access_token
+
+
+
+                client.admin_update_user_attributes(
+                    Username=refresh_user,
+                    UserPoolId=user_pool_id,
+                    UserAttributes=[
+                        {
+                            'Name': 'custom:FaceB_access_token',
+                            'Value': FaceB.get("access_token")
+                        },
+                    ],
                 )
+
+
                 return {
                     'status':200,
                     'message':{
