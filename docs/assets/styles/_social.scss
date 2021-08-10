@@ -209,7 +209,7 @@
 $counter: 0;
 
 $social_login_button_colors:
-0,0,0, //done because of odd behavior with nth-child
+0,0,0,0,0,0,0,0,0,0,0,0, //done because of odd behavior with nth-child
 --radial-bg-blue,
 --radial-bg-skyblue,
 --radial-bg-lightbrown,
@@ -410,7 +410,7 @@ $social_login_button_colors:
             opacity:0;
         }
 
-        &FB,&TW,&IG,&PI,&TM,&DS,&RDIT,&BLOG,&TW,&PT,&{
+        &FB,&TW,&IG,&PI,&TM,&DS,&RDIT,&BLOG,&TWH,&PT,&{
             &Login{
                 &Button{
 
